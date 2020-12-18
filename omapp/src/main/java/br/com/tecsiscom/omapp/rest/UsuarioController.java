@@ -13,7 +13,7 @@ import br.com.tecsiscom.omapp.service.UsuarioService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/usuarios")
 @RequiredArgsConstructor
 public class UsuarioController {
 
