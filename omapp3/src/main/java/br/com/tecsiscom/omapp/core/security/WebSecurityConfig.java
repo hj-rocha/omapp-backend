@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
+//Apagamos isso porque estamos trabalhando com o fluxo password do outh2	
 //	@Override
 //	protected void configure(HttpSecurity http) throws Exception {
 //		http
@@ -48,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+		//Apagamos isso porque as autorizações agora são anotadas nos controllers 
 //			.authorizeRequests()
 //			.antMatchers(HttpMethod.POST, "/testes/**").hasAuthority("EDITAR_RESTAURANTES")
 //			.antMatchers(HttpMethod.PUT, "/testes/**").hasAuthority("EDITAR_COZINHAS")
@@ -89,7 +91,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		return jwtAuthenticationConverter;
 	}
-	
+
+	//Apagamos isso porque agora o usuário é pego no BD.
 //	@Override
 //	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //		auth.inMemoryAuthentication()
@@ -116,6 +119,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		return super.authenticationManager();
 	}
 
+	//Apagamos isso porque agora o usuário é pego no BD.
 //	@Bean
 //	@Override
 //		protected UserDetailsService userDetailsService() {
