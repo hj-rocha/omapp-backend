@@ -1,9 +1,13 @@
 package br.com.tecsiscom.omapp.rest.pessoas;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.tecsiscom.omapp.exception.UsuarioCadastradoException;
+import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
+import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
 import br.com.tecsiscom.omapp.rest.model.input.SenhaInput;
 import br.com.tecsiscom.omapp.service.pessoas.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +30,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsuarioController {
 
+	@Autowired
+	UsuarioRepository repository;
+	
+	
     private final UsuarioService service;
 
 
@@ -43,5 +53,12 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {
 		service.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
+	}
+	
+
+	@GetMapping
+	public List<Usuario> listar() {
+		List<Usuario> usuarios = repository.findAll();
+		return usuarios;
 	}
 }
