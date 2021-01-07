@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.service.pessoas;
+package br.com.tecsiscom.omapp.model.service.pessoas;
 
 import javax.transaction.Transactional;
 

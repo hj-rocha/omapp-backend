@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.UsuarioCadastradoException;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
+import br.com.tecsiscom.omapp.model.service.pessoas.UsuarioService;
+import br.com.tecsiscom.omapp.rest.model.UsuarioModel;
 import br.com.tecsiscom.omapp.rest.model.input.SenhaInput;
-import br.com.tecsiscom.omapp.service.pessoas.UsuarioService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -49,16 +51,28 @@ public class UsuarioController {
         }
     }
     
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {
 		service.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
 	}
 	
-
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public List<Usuario> listar() {
 		List<Usuario> usuarios = repository.findAll();
 		return usuarios;
+	}
+	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+	@GetMapping("/{usuarioId}")
+	public UsuarioModel buscar(@PathVariable Long usuarioId) {
+		Usuario usuario = service.buscarOuFalhar(usuarioId);
+		UsuarioModel usuarioModel = new UsuarioModel();
+		usuarioModel.setId(usuario.getId());
+		usuarioModel.setEmail(usuario.getUsername());
+		
+		return usuarioModel;
 	}
 }

@@ -17,8 +17,8 @@ import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
-import br.com.tecsiscom.omapp.service.pessoas.PessoaService;
-import br.com.tecsiscom.omapp.service.pessoas.UsuarioService;
+import br.com.tecsiscom.omapp.model.service.pessoas.PessoaService;
+import br.com.tecsiscom.omapp.model.service.pessoas.UsuarioService;
 
 @RestController
 @RequestMapping(path = "/pessoas/{pessoaId}/usuarios")

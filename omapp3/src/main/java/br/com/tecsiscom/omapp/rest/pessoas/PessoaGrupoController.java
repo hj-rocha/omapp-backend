@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
-import br.com.tecsiscom.omapp.service.pessoas.PessoaService;
+import br.com.tecsiscom.omapp.model.service.pessoas.PessoaService;
 
 @RestController
 @RequestMapping(path = "/pessoas/{pessoaId}/grupos")

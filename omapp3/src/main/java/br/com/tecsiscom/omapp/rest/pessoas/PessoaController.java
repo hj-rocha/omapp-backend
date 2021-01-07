@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
@@ -29,7 +31,7 @@ import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
-import br.com.tecsiscom.omapp.service.pessoas.PessoaService;
+import br.com.tecsiscom.omapp.model.service.pessoas.PessoaService;
 
 @RestController
 @RequestMapping("/pessoas")
@@ -47,13 +49,19 @@ public class PessoaController {
 	@Autowired
 	UsuarioRepository usuarioRepository;
 
-	@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
+	@CheckSecurity.Pessoas.PodeConsultar
+	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@GetMapping
 	public List<Pessoa> listar() {
 		List<Pessoa> pessoas = pessoaRepository.findAll();
+		for (Pessoa pessoa : pessoas) {
+			System.out.println(pessoa.getNome());
+		}
 		return pessoas;
 	}
 
+	@CheckSecurity.Pessoas.PodeConsultar
+	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@Transactional
 	@GetMapping("/{pessoaId}")
 	public Optional<Pessoa> buscar(@PathVariable Long pessoaId) {
@@ -87,16 +95,22 @@ public class PessoaController {
 		// return pessoaRepository.findById(pessoaId);
 	}
 
+	@CheckSecurity.Pessoas.PodeEditar
+	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Pessoa salvar(@RequestBody @Valid Pessoa pessoa) {
+		System.out.println(pessoa);
 		try {
 			return pessoaService.salvar(pessoa);
+			///return null;
 		} catch (PessoaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
-
+	
+	@CheckSecurity.Pessoas.PodeEditar
+	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@DeleteMapping("/{pessoaId}")
 	public ResponseEntity<Pessoa> remover(@PathVariable("pessoaId") Long id) {
 
@@ -113,10 +127,17 @@ public class PessoaController {
 		}
 	}
 
+	@CheckSecurity.Pessoas.PodeEditar
+	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PutMapping("/{pessoaId}")
 	public Pessoa atualizar(@PathVariable("pessoaId") Long pessoaId, @RequestBody Pessoa pessoa) {
 
 		Pessoa pessoaAtual = pessoaService.buscarOuFalhar(pessoaId);
+
+		System.out.println(pessoa.getEmail());
+		//System.out.println(pessoa.getEndereco().getCidade().getNome());
+		System.out.println(pessoa.toString());
+		//BeanUtils.copyProperties(pessoa, pessoaAtual, "id", "grupos", "dataCadastro", "usuario");
 
 		try {
 			return pessoaService.salvar(pessoa);

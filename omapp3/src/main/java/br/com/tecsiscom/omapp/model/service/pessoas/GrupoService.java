@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.service.pessoas;
+package br.com.tecsiscom.omapp.model.service.pessoas;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
+import br.com.tecsiscom.omapp.exception.GrupoCadastradoException;
 import br.com.tecsiscom.omapp.exception.GrupoNaoEncontradoException;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Permissao;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
 
 @Service
-public class PessoaGrupoService {
+public class GrupoService {
 
 	private static final String MSG_GRUPO_EM_USO 
 		= "Grupo de código %d não pode ser removido, pois está em uso";
@@ -24,8 +25,17 @@ public class PessoaGrupoService {
 	@Autowired
 	private PermissaoService cadastroPermissao;
 	
+//	@Transactional
+//	public Grupo salvar(Grupo grupo) {
+//		return grupoRepository.save(grupo);
+//	}
+
 	@Transactional
 	public Grupo salvar(Grupo grupo) {
+		boolean exists = grupoRepository.existsByNome(grupo.getNome());
+		if (exists) {
+			throw new GrupoCadastradoException(grupo.getNome());
+		}
 		return grupoRepository.save(grupo);
 	}
 	

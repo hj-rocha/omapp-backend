@@ -20,5 +20,7 @@ public class Estado {
 	private Long id;
 	
 	@Column(nullable = false)
-	private String nome;
+	private String sigla;
+	
+	private String nom_estado;
 }

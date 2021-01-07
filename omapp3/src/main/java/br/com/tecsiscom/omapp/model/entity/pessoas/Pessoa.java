@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -41,8 +42,13 @@ public class Pessoa {
 	@Column(nullable = false)
 	private String nome;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String email;
+	
+	private String identidade;
+
+	@CPF(message = "CPF inválido")
+	private String cpf;
 	
 	//@JsonIgnore
 	@CreationTimestamp

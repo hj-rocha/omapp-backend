@@ -10,4 +10,5 @@ import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 @Repository
 public interface GrupoRepository extends JpaRepository<Grupo, Long> {
 
+    boolean existsByNome(String nome);
 }

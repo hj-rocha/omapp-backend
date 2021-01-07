@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.service.pessoas;
+package br.com.tecsiscom.omapp.model.service.pessoas;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

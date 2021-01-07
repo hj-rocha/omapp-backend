@@ -22,6 +22,8 @@ public class Endereco {
 	private String complemento;
 	@Column(name = "endereco_bairro")
 	private String bairro;
+	@Column(name = "endereco_referencia")
+	private String referencia;
 	
 	//@ManyToOne(fetch = FetchType.LAZY)
 	@ManyToOne
