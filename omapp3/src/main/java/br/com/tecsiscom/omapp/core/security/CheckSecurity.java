@@ -27,13 +27,13 @@ public @interface CheckSecurity {
 	
 	public @interface Grupos {
 
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_GRUPOS')")
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_GRUPOS_PERMISSOES')")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeEditar {
 		}
 
-		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_GRUPOS')")
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_GRUPOS_PERMISSOES')")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeConsultar {

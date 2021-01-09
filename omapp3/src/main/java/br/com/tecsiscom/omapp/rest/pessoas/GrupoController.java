@@ -1,6 +1,8 @@
 package br.com.tecsiscom.omapp.rest.pessoas;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -21,9 +23,12 @@ import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Permissao;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
+import br.com.tecsiscom.omapp.model.repository.pessoas.PermissaoRepository;
 import br.com.tecsiscom.omapp.model.service.pessoas.GrupoService;
+import br.com.tecsiscom.omapp.model.service.pessoas.PermissaoService;
 import br.com.tecsiscom.omapp.rest.model.GrupoModel;
 import br.com.tecsiscom.omapp.rest.model.input.GrupoInput;
+import br.com.tecsiscom.omapp.rest.model.input.PermissaoInput;
 
 @RestController
 @RequestMapping("/grupos")
@@ -33,7 +38,10 @@ public class GrupoController {
 	private GrupoRepository grupoRepository;
 
 	@Autowired
-	private GrupoService cadastroGrupo;
+	private GrupoService grupoService;
+
+	@Autowired
+	private PermissaoRepository permissaoRepository;
 
 	@CheckSecurity.Grupos.PodeConsultar
 	@GetMapping
@@ -44,9 +52,38 @@ public class GrupoController {
 	}
 
 	@CheckSecurity.Grupos.PodeConsultar
+	@GetMapping("/{grupoId}/permissoes_input")
+	public List<PermissaoInput> todasPermissoes(@PathVariable Long grupoId) {
+
+		List<Permissao> permissoes = permissaoRepository.findAll();
+		Optional<Grupo> grupo = grupoRepository.findById(grupoId);
+		List<PermissaoInput> permissoesInput = new ArrayList<PermissaoInput>();
+
+
+		Boolean achou = false;
+		for (Permissao permissao : permissoes) {
+			achou = false;
+			for (Permissao permissao2 : grupo.get().getPermissoes()) {
+				if (permissao.getId() == permissao2.getId()) {
+					achou = true;
+				}
+			}
+			PermissaoInput permissaoInput = new PermissaoInput();
+			permissaoInput.setId(permissao.getId());
+			permissaoInput.setGrupoNome(grupo.get().getNome());
+			permissaoInput.setNome(permissao.getNome());
+			permissaoInput.setDescricao(permissao.getDescricao());
+			permissaoInput.setPertence(achou);
+			permissoesInput.add(permissaoInput);
+
+		}
+		return permissoesInput;
+	}
+
+	@CheckSecurity.Grupos.PodeConsultar
 	@GetMapping("/{grupoId}")
 	public Grupo buscar(@PathVariable Long grupoId) {
-		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+		Grupo grupo = grupoService.buscarOuFalhar(grupoId);
 
 		return grupo;
 	}
@@ -56,17 +93,17 @@ public class GrupoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Grupo adicionar(@RequestBody @Valid Grupo grupo) {
 
-		return grupo = cadastroGrupo.salvar(grupo);
+		return grupo = grupoService.salvar(grupo);
 	}
 
 	@CheckSecurity.Grupos.PodeEditar
 	@PutMapping("/{grupoId}")
 	public Grupo atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
-		Grupo grupoAtual = cadastroGrupo.buscarOuFalhar(grupoId);
+		Grupo grupoAtual = grupoService.buscarOuFalhar(grupoId);
 
 		grupoAtual.setNome(grupoInput.getNome());
 
-		grupoAtual = cadastroGrupo.salvar(grupoAtual);
+		grupoAtual = grupoService.salvar(grupoAtual);
 
 		return grupoAtual;
 	}
@@ -75,7 +112,7 @@ public class GrupoController {
 	@DeleteMapping("/{grupoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long grupoId) {
-		cadastroGrupo.excluir(grupoId);
+		grupoService.excluir(grupoId);
 	}
 
 }

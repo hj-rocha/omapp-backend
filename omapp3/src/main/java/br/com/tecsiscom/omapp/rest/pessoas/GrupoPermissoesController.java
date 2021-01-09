@@ -18,7 +18,7 @@ import br.com.tecsiscom.omapp.model.entity.pessoas.Permissao;
 import br.com.tecsiscom.omapp.model.service.pessoas.GrupoService;
 
 @RestController
-@RequestMapping(value = "/grupos/{grupoId}/permissoes")
+@RequestMapping("/grupos/{grupoId}/permissoes")
 public class GrupoPermissoesController {
 
 	@Autowired

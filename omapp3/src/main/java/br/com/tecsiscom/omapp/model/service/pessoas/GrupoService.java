@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.GrupoCadastradoException;
 import br.com.tecsiscom.omapp.exception.GrupoNaoEncontradoException;
+import br.com.tecsiscom.omapp.exception.NegocioException;
+import br.com.tecsiscom.omapp.exception.GrupoFundamentalNaoApagavelException;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Permissao;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
@@ -41,9 +43,19 @@ public class GrupoService {
 	
 	@Transactional
 	public void excluir(Long grupoId) {
+		
+		//TODO: Remover o hardcode 
+		if(grupoId<=6) {
+			throw new GrupoFundamentalNaoApagavelException("Esse é um grupo fundamental , não pode ser apagado.");
+		}
+		
+		
+		
 		try {
+			
 			grupoRepository.deleteById(grupoId);
 			grupoRepository.flush();
+			
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new GrupoNaoEncontradoException(grupoId);
@@ -56,6 +68,10 @@ public class GrupoService {
 
 	@Transactional
 	public void desassociarPermissao(Long grupoId, Long permissaoId) {
+		
+		if(grupoId==1) {
+			throw new NegocioException("O grupo gestor não pode ter suas permissões desassociadas."); 
+		}
 		Grupo grupo = buscarOuFalhar(grupoId);
 		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
 		
