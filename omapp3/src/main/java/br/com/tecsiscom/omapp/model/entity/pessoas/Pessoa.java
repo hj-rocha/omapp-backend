@@ -65,13 +65,19 @@ public class Pessoa {
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
 	
+	private String telefone;
+	
+	private String telefoneComercial;
+	
+	private String anotacoes;
+	
 	@OneToOne
 	@JoinColumn(name="usuario_id",referencedColumnName = "id")
     public Usuario usuario;
 
 	//@JsonIgnore
 	@Embedded // anotação usada para embutir uma classe @Embeddable
-	private Endereco endereco;
+	private EnderecoPessoa endereco;
 	
 	//@JsonIgnore
 	@ManyToMany

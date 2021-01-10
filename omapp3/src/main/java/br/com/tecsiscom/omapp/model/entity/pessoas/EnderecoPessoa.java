@@ -6,11 +6,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Cidade;
 import lombok.Data;
 
 @Data
 @Embeddable  // Classe a ser incorporada.
-public class Endereco {
+public class EnderecoPessoa {
 
 	@Column(name = "endereco_cep")
 	private String cep;

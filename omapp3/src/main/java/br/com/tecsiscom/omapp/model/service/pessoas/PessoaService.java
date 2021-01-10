@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Cidade;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Endereco;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Estado;
+import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Cidade;
+import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Estado;
+import br.com.tecsiscom.omapp.model.entity.pessoas.EnderecoPessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
@@ -32,7 +32,7 @@ public class PessoaService {
 			Estado estado = new Estado();
 			estado.setId(28L);
 			cidade.setEstado(estado);
-			Endereco endereco = new Endereco();
+			EnderecoPessoa endereco = new EnderecoPessoa();
 			endereco.setCidade(cidade);
 			pessoa.setEndereco(endereco);
 			Grupo grupo = new Grupo();

@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.rest.pessoas;
+package br.com.tecsiscom.omapp.rest.controllers.pessoas;
 
 import java.util.List;
 import java.util.Optional;

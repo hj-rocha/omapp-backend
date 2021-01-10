@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.model.service.pessoas;
+package br.com.tecsiscom.omapp.model.service.geografia.enderecos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.CidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Cidade;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Estado;
-import br.com.tecsiscom.omapp.model.repository.pessoas.CidadeRepository;
+import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Cidade;
+import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Estado;
+import br.com.tecsiscom.omapp.model.repository.geografia.enderecos.CidadeRepository;
 
 @Service
 public class CidadeService {

@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.rest.pessoas;
+package br.com.tecsiscom.omapp.rest.controllers.pessoas;
 
 import java.util.List;
 
@@ -51,21 +51,21 @@ public class UsuarioController {
         }
     }
     
-	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
+	@CheckSecurity.PessoasGrupos.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {
 		service.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
 	}
 	
-	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+	@CheckSecurity.PessoasGrupos.PodeConsultar
 	@GetMapping
 	public List<Usuario> listar() {
 		List<Usuario> usuarios = repository.findAll();
 		return usuarios;
 	}
 	
-	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
+	@CheckSecurity.PessoasGrupos.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
 		Usuario usuario = service.buscarOuFalhar(usuarioId);

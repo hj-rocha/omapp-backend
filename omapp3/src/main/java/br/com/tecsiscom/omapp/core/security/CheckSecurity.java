@@ -72,7 +72,7 @@ public @interface CheckSecurity {
 
 	}
 
-	public @interface UsuariosGruposPermissoes {
+	public @interface PessoasGrupos {
 
 		@PreAuthorize("hasAuthority('SCOPE_WRITE') and " + "@algaSecurity.usuarioAutenticadoIgual(#usuarioId)")
 		@Retention(RUNTIME)
@@ -80,20 +80,35 @@ public @interface CheckSecurity {
 		public @interface PodeAlterarPropriaSenha {
 		}
 
-		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') or "
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('EDITAR_PESSOAS_GRUPOS') or "
 				+ "@algaSecurity.usuarioAutenticadoIgual(#usuarioId))")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeAlterarUsuario {
 		}
 
-		@PreAuthorize("@algaSecurity.podeEditarUsuariosGruposPermissoes()")
+		@PreAuthorize("@algaSecurity.podeEditarPessoasGrupos()")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeEditar {
 		}
 
-		@PreAuthorize("@algaSecurity.podeConsultarUsuariosGruposPermissoes()")
+		@PreAuthorize("@algaSecurity.podeConsultarPessoasGrupos()")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {
+		}
+
+	}
+	public @interface Enderecos {
+
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_ENDERECOS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {
+		}
+
+		@PreAuthorize("@algaSecurity.podeConsultarEnderecos()")
 		@Retention(RUNTIME)
 		@Target(METHOD)
 		public @interface PodeConsultar {

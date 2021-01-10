@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.model.service.pessoas;
+package br.com.tecsiscom.omapp.model.service.geografia.enderecos;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.EstadoNaoEncontradoException;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Estado;
-import br.com.tecsiscom.omapp.model.repository.pessoas.EstadoRepository;
+import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Estado;
+import br.com.tecsiscom.omapp.model.repository.geografia.enderecos.EstadoRepository;
 
 @Service
 public class EstadoService {

@@ -37,12 +37,12 @@ public class AlgaSecurity {
 				.anyMatch(authority -> authority.getAuthority().equals(authorityName));
 	}
 	
-	public boolean podeConsultarUsuariosGruposPermissoes() {
-		return temEscopoLeitura() && hasAuthority("CONSULTAR_USUARIOS_GRUPOS_PERMISSOES");
+	public boolean podeConsultarPessoasGrupos() {
+		return temEscopoLeitura() && hasAuthority("CONSULTAR_PESSOAS_GRUPOS");
 	}
 	
-	public boolean podeEditarUsuariosGruposPermissoes() {
-		return temEscopoEscrita() && hasAuthority("EDITAR_USUARIOS_GRUPOS_PERMISSOES");
+	public boolean podeEditarPessoasGrupos() {
+		return temEscopoEscrita() && hasAuthority("EDITAR_PESSOAS_GRUPOS");
 	}
 	
 	public boolean temEscopoEscrita() {
@@ -58,6 +58,10 @@ public class AlgaSecurity {
 	}
 	
 	public boolean podeConsultarEstados() {
+		return isAutenticado() && temEscopoLeitura();
+	}
+	
+	public boolean podeConsultarEnderecos() {
 		return isAutenticado() && temEscopoLeitura();
 	}
 
