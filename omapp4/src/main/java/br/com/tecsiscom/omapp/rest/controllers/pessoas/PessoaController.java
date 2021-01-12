@@ -101,7 +101,7 @@ public class PessoaController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Pessoa salvar(@RequestBody @Valid Pessoa pessoa) {
-		System.out.println(pessoa);
+		//System.out.println(pessoa);
 		try {
 			return pessoaService.salvar(pessoa);
 			///return null;

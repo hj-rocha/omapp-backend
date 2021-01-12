@@ -115,5 +115,20 @@ public @interface CheckSecurity {
 		}
 
 	}
+	
+	public @interface Produtos {
+
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_PRODUTOS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {
+		}
+
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_PRODUTOS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {
+		}
+	}
 
 }
