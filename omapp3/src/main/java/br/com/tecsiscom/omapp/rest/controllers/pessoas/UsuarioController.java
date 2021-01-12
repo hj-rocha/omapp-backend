@@ -39,6 +39,7 @@ public class UsuarioController {
 
 	@PostMapping
 	@PreAuthorize("permitAll()")
+	//@CheckSecurity.Pessoas.PodeEditar
 	@ResponseStatus(HttpStatus.CREATED)
 	public void salvar(@RequestBody @Valid Usuario usuario) {
 

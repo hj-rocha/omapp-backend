@@ -45,6 +45,7 @@ public class UsuarioService { // implements UserDetailsService {
 			// TODO Refatorar isso, pois a regra de negócio está repetida aqui e em pessoa
 			// service.
 			// Início Adicionamos esse códgo para cadastrar uma pessoa para o usuário novo
+			usuario = repository.save(usuario);
 			Pessoa pessoa = new Pessoa();
 			pessoa.setNome("Usuário Novo");
 			pessoa.setEmail(usuario.getUsername());
