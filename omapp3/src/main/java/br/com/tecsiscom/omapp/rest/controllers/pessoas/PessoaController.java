@@ -26,6 +26,7 @@ import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
+import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
@@ -54,9 +55,9 @@ public class PessoaController {
 	@GetMapping
 	public List<Pessoa> listar() {
 		List<Pessoa> pessoas = pessoaRepository.findAll();
-		for (Pessoa pessoa : pessoas) {
-			System.out.println(pessoa.getNome());
-		}
+//		for (Pessoa pessoa : pessoas) {
+//			System.out.println(pessoa.getNome());
+//		}
 		return pessoas;
 	}
 
@@ -144,6 +145,27 @@ public class PessoaController {
 		} catch (PessoaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
+	}
+	
+	@PreAuthorize("permitAll()")
+	@PostMapping("/teste")
+	public void teste() {
+       
+		Pessoa pessoa = new Pessoa();
+        
+		Usuario usuario =  new Usuario();
+		
+		usuario.setPassword("123");
+		usuario.setUsername("clara@mail.com");
+		
+        
+       pessoa.setNome("Ana Clara");
+       pessoa.setEmail("anaclara@mail.com");
+       pessoa.setUsuario(usuario); 
+       
+       this.pessoaRepository.save(pessoa);
+
+
 	}
 
 }

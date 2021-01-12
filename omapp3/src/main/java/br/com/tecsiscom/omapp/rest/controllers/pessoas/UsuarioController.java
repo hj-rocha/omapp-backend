@@ -1,5 +1,6 @@
 package br.com.tecsiscom.omapp.rest.controllers.pessoas;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.UsuarioCadastradoException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
 import br.com.tecsiscom.omapp.model.service.pessoas.UsuarioService;
@@ -34,45 +34,52 @@ public class UsuarioController {
 
 	@Autowired
 	UsuarioRepository repository;
-	
-	
-    private final UsuarioService service;
 
+	private final UsuarioService service;
 
-    @PostMapping
+	@PostMapping
 	@PreAuthorize("permitAll()")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void salvar(@RequestBody @Valid Usuario usuario){
+	@ResponseStatus(HttpStatus.CREATED)
+	public void salvar(@RequestBody @Valid Usuario usuario) {
 
-        try{
-            service.salvar(usuario);
-        }catch (UsuarioCadastradoException e){
-            throw new ResponseStatusException( HttpStatus.BAD_REQUEST, e.getMessage() );
-        }
-    }
-    
+		try {
+			service.salvar(usuario);
+		} catch (UsuarioCadastradoException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+
+	}
+
 	@CheckSecurity.PessoasGrupos.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {
 		service.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
 	}
-	
+
 	@CheckSecurity.PessoasGrupos.PodeConsultar
 	@GetMapping
-	public List<Usuario> listar() {
-		List<Usuario> usuarios = repository.findAll();
+	public List<UsuarioModel> listar() {
+		List<UsuarioModel> usuarios = new ArrayList<UsuarioModel>();
+		
+		for (Usuario usuario : repository.findAll()) {
+		UsuarioModel usuarioModel= new UsuarioModel();
+		usuarioModel.setId(usuario.getId());
+		usuarioModel.setUsername(usuario.getUsername());
+		usuarios.add(usuarioModel);
+		}
+		
 		return usuarios;
 	}
-	
+
 	@CheckSecurity.PessoasGrupos.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
 		Usuario usuario = service.buscarOuFalhar(usuarioId);
 		UsuarioModel usuarioModel = new UsuarioModel();
 		usuarioModel.setId(usuario.getId());
-		usuarioModel.setEmail(usuario.getUsername());
-		
+		usuarioModel.setUsername(usuario.getUsername());
+
 		return usuarioModel;
 	}
 }

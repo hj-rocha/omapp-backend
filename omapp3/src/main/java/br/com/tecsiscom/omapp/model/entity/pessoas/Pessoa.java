@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -71,7 +73,7 @@ public class Pessoa {
 	
 	private String anotacoes;
 	
-	@OneToOne
+	@OneToOne( cascade = CascadeType.ALL)
 	@JoinColumn(name="usuario_id",referencedColumnName = "id")
     public Usuario usuario;
 
