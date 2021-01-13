@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +26,26 @@ import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
+import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
+import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaFisica;
+import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaFisica;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
+import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaFisicaRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
+import br.com.tecsiscom.omapp.model.service.pessoas.PessoaFisicaService;
 import br.com.tecsiscom.omapp.model.service.pessoas.PessoaService;
 
 @RestController
-@RequestMapping("/pessoas")
-public class PessoaController {
+@RequestMapping("/pessoas_fisicas")
+public class PessoaFisicaController {
 
 	@Autowired
-	PessoaRepository pessoaRepository;
+	PessoaFisicaRepository pessoaRepository;
 
 	@Autowired
-	PessoaService pessoaService;
+	PessoaFisicaService pessoaService;
 
 	@Autowired
 	GrupoRepository grupoRepository;
@@ -51,8 +56,8 @@ public class PessoaController {
 	@CheckSecurity.Pessoas.PodeConsultar
 	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@GetMapping
-	public List<Pessoa> listar() {
-		List<Pessoa> pessoas = pessoaRepository.findAll();
+	public List<PessoaFisica> listar() {
+		List<PessoaFisica> pessoas = pessoaRepository.findAll();
 //		for (Pessoa pessoa : pessoas) {
 //			System.out.println(pessoa.getNome());
 //		}
@@ -63,9 +68,9 @@ public class PessoaController {
 	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@Transactional
 	@GetMapping("/{pessoaId}")
-	public Optional<Pessoa> buscar(@PathVariable Long pessoaId) {
+	public Optional<PessoaFisica> buscar(@PathVariable Long pessoaId) {
 
-		Optional<Pessoa> pessoa = pessoaRepository.findById(pessoaId);
+		Optional<PessoaFisica> pessoa = pessoaRepository.findById(pessoaId);
 
 //		System.out.println(pessoa.get().getNome());
 //
@@ -98,7 +103,7 @@ public class PessoaController {
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Pessoa salvar(@RequestBody @Valid Pessoa pessoa) {
+	public PessoaFisica salvar(@RequestBody @Valid PessoaFisica pessoa) {
 		//System.out.println(pessoa);
 		try {
 			return pessoaService.salvar(pessoa);
@@ -111,7 +116,7 @@ public class PessoaController {
 	@CheckSecurity.Pessoas.PodeEditar
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@DeleteMapping("/{pessoaId}")
-	public ResponseEntity<Pessoa> remover(@PathVariable("pessoaId") Long id) {
+	public ResponseEntity<PessoaFisica> remover(@PathVariable("pessoaId") Long id) {
 
 		try {
 			pessoaService.remover(id);
@@ -129,9 +134,9 @@ public class PessoaController {
 	@CheckSecurity.Pessoas.PodeEditar
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PutMapping("/{pessoaId}")
-	public Pessoa atualizar(@PathVariable("pessoaId") Long pessoaId, @RequestBody Pessoa pessoa) {
+	public PessoaFisica atualizar(@PathVariable("pessoaId") Long pessoaId, @RequestBody PessoaFisica pessoa) {
 
-		Pessoa pessoaAtual = pessoaService.buscarOuFalhar(pessoaId);
+		PessoaFisica pessoaAtual = pessoaService.buscarOuFalhar(pessoaId);
 
 		System.out.println(pessoa.getEmail());
 		//System.out.println(pessoa.getEndereco().getCidade().getNome());
@@ -149,7 +154,7 @@ public class PessoaController {
 	@PostMapping("/teste")
 	public void teste() {
        
-		Pessoa pessoa = new Pessoa();
+		PessoaFisica pessoa = new PessoaFisica();
         
 		Usuario usuario =  new Usuario();
 		
