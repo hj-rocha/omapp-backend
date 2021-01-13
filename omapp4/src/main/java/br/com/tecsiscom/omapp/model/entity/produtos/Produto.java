@@ -1,6 +1,6 @@
 package br.com.tecsiscom.omapp.model.entity.produtos;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,8 +19,6 @@ import javax.persistence.ManyToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,8 +36,12 @@ public class Produto {
 	
 	@Column(nullable = false)
 	private String nome;
-	
+
 	private String descricao;
+
+	private BigDecimal custo;
+	
+	private BigDecimal venda;
 	
 	//@JsonIgnore
 	@CreationTimestamp

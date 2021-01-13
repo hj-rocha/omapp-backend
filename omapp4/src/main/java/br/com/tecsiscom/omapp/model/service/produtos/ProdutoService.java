@@ -35,16 +35,6 @@ public class ProdutoService {
 //			throw new ProdutoCadastradoException(produto.getNome());
 //		}
 		
-		boolean exists = produtoRepository.existsById(produto.getId());
-		
-		if (exists) {
-			Optional<Produto> produtoBD = this.produtoRepository.findById(produto.getId());
-
-			BeanUtils.copyProperties(produto, produtoBD.get(), "id", "dataCadastro");
-			
-			return produtoRepository.save(produtoBD.get());	
-		}
-		
 		return produtoRepository.save(produto);
 	}
 	
