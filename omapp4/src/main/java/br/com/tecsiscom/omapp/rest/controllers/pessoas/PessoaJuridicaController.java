@@ -25,22 +25,22 @@ import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaFisica;
+import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaJuridica;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
 import br.com.tecsiscom.omapp.model.repository.pessoas.GrupoRepository;
-import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaFisicaRepository;
+import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaJuridicaRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
-import br.com.tecsiscom.omapp.model.service.pessoas.PessoaFisicaService;
+import br.com.tecsiscom.omapp.model.service.pessoas.PessoaJuridicaService;
 
 @RestController
-@RequestMapping("/pessoas_fisicas")
-public class PessoaFisicaController {
+@RequestMapping("/pessoas_juridicas")
+public class PessoaJuridicaController {
 
 	@Autowired
-	PessoaFisicaRepository pessoaRepository;
+	PessoaJuridicaRepository pessoaRepository;
 
 	@Autowired
-	PessoaFisicaService pessoaService;
+	PessoaJuridicaService pessoaService;
 
 	@Autowired
 	GrupoRepository grupoRepository;
@@ -51,8 +51,8 @@ public class PessoaFisicaController {
 	@CheckSecurity.Pessoas.PodeConsultar
 	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@GetMapping
-	public List<PessoaFisica> listar() {
-		List<PessoaFisica> pessoas = pessoaRepository.findAll();
+	public List<PessoaJuridica> listar() {
+		List<PessoaJuridica> pessoas = pessoaRepository.findAll();
 //		for (Pessoa pessoa : pessoas) {
 //			System.out.println(pessoa.getNome());
 //		}
@@ -63,9 +63,9 @@ public class PessoaFisicaController {
 	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@Transactional
 	@GetMapping("/{pessoaId}")
-	public Optional<PessoaFisica> buscar(@PathVariable Long pessoaId) {
+	public Optional<PessoaJuridica> buscar(@PathVariable Long pessoaId) {
 
-		Optional<PessoaFisica> pessoa = pessoaRepository.findById(pessoaId);
+		Optional<PessoaJuridica> pessoa = pessoaRepository.findById(pessoaId);
 
 //		System.out.println(pessoa.get().getNome());
 //
@@ -98,7 +98,7 @@ public class PessoaFisicaController {
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public PessoaFisica salvar(@RequestBody @Valid PessoaFisica pessoa) {
+	public PessoaJuridica salvar(@RequestBody @Valid PessoaJuridica pessoa) {
 		//System.out.println(pessoa);
 		try {
 			return pessoaService.salvar(pessoa);
@@ -111,7 +111,7 @@ public class PessoaFisicaController {
 	@CheckSecurity.Pessoas.PodeEditar
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@DeleteMapping("/{pessoaId}")
-	public ResponseEntity<PessoaFisica> remover(@PathVariable("pessoaId") Long id) {
+	public ResponseEntity<PessoaJuridica> remover(@PathVariable("pessoaId") Long id) {
 
 		try {
 			pessoaService.remover(id);
@@ -129,9 +129,9 @@ public class PessoaFisicaController {
 	@CheckSecurity.Pessoas.PodeEditar
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PutMapping("/{pessoaId}")
-	public PessoaFisica atualizar(@PathVariable("pessoaId") Long pessoaId, @RequestBody PessoaFisica pessoa) {
+	public PessoaJuridica atualizar(@PathVariable("pessoaId") Long pessoaId, @RequestBody PessoaJuridica pessoa) {
 
-		PessoaFisica pessoaAtual = pessoaService.buscarOuFalhar(pessoaId);
+		PessoaJuridica pessoaAtual = pessoaService.buscarOuFalhar(pessoaId);
 
 		System.out.println(pessoa.getEmail());
 		//System.out.println(pessoa.getEndereco().getCidade().getNome());
@@ -149,7 +149,7 @@ public class PessoaFisicaController {
 	@PostMapping("/teste")
 	public void teste() {
        
-		PessoaFisica pessoa = new PessoaFisica();
+		PessoaJuridica pessoa = new PessoaJuridica();
         
 		Usuario usuario =  new Usuario();
 		

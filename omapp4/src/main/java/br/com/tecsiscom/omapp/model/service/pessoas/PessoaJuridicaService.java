@@ -12,19 +12,23 @@ import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Cidade;
 import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Estado;
 import br.com.tecsiscom.omapp.model.entity.pessoas.EnderecoPessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
-import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaFisica;
+import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
+import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaJuridica;
+import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaJuridica;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaFisicaRepository;
+import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaJuridicaRepository;
+import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 
 @Service
-public class PessoaFisicaService {
+public class PessoaJuridicaService {
 
 	@Autowired
-	private PessoaFisicaRepository pessoaRepository;
+	private PessoaJuridicaRepository pessoaRepository;
 	
 	@Autowired
 	private GrupoService grupoService;
 	
-	public PessoaFisica salvar(PessoaFisica pessoa) {
+	public PessoaJuridica salvar(PessoaJuridica pessoa) {
 		
 		if(pessoa.getEndereco().getCidade().getId() == null) {
 			Cidade cidade = new Cidade();
@@ -46,7 +50,7 @@ public class PessoaFisicaService {
 	
 	@Transactional
 	public void desassociarGrupo(Long pessoaId, Long grupoId) {
-		PessoaFisica pessoa = buscarOuFalhar(pessoaId);
+		PessoaJuridica pessoa = buscarOuFalhar(pessoaId);
 		Grupo grupo = grupoService.buscarOuFalhar(grupoId);
 		
 		pessoa.removerGrupo(grupo);
@@ -55,7 +59,7 @@ public class PessoaFisicaService {
 	
 	@Transactional
 	public void associarGrupo(Long pessoaId, Long grupoId) {
-		PessoaFisica pessoa = buscarOuFalhar(pessoaId);
+		PessoaJuridica pessoa = buscarOuFalhar(pessoaId);
 		Grupo grupo = grupoService.buscarOuFalhar(grupoId);
 		
 		pessoa.adicionarGrupo(grupo);
@@ -63,7 +67,7 @@ public class PessoaFisicaService {
 		pessoaRepository.save(pessoa);
 	}
 	
-	public PessoaFisica buscarOuFalhar(Long pessoaId) {
+	public PessoaJuridica buscarOuFalhar(Long pessoaId) {
 		return pessoaRepository.findById(pessoaId)
 				.orElseThrow(() -> new PessoaNaoEncontradaException(pessoaId));
 		
