@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.model.entity.pecas;
+package br.com.tecsiscom.omapp.model.entity.produtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -50,6 +50,13 @@ public class Produto implements Serializable{
 	
 	//@JsonIgnore
 	@ManyToMany
+	@JoinTable(name = "produto_marca",
+			joinColumns = @JoinColumn(name = "produtoi_id"),
+			inverseJoinColumns = @JoinColumn(name = "marca_id"))
+	private java.util.Set<Marca> marcas;
+	
+	//@JsonIgnore
+	@ManyToMany
 	@JoinTable(name = "produto_imposto",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "imposto_id"))
