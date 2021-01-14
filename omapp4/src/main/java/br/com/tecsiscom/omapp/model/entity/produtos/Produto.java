@@ -45,6 +45,7 @@ public class Produto implements Serializable{
 
 	private String descricao;
 
+	//Custo total do produto é a soma de todas as despesas
 	private BigDecimal custo;
 	
 	private BigDecimal venda;

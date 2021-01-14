@@ -94,6 +94,15 @@ public class PessoaController {
 		// return pessoaRepository.findById(pessoaId);
 	}
 
+	
+	@CheckSecurity.Pessoas.PodeConsultar
+	@Transactional
+	@GetMapping("/nome/{pessoaNome}")
+	public List<Pessoa> buscarPorNome(@PathVariable String pessoaNome) {
+		List<Pessoa> pessoas = pessoaRepository.findByNomeStartingWith(pessoaNome);
+		return pessoas;
+	}
+
 	@CheckSecurity.Pessoas.PodeEditar
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PostMapping

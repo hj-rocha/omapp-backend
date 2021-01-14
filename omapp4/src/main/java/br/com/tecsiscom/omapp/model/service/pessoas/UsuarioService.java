@@ -14,7 +14,9 @@ import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Estado;
 import br.com.tecsiscom.omapp.model.entity.pessoas.EnderecoPessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
+import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaFisica;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
+import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaFisicaRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.UsuarioRepository;
 
@@ -28,10 +30,7 @@ public class UsuarioService { // implements UserDetailsService {
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private PessoaRepository pessoaRepository;
-
-	@Autowired
-	private PessoaService pessoaService;
+	private PessoaFisicaRepository pessoaFisicaRepository;
 
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
@@ -46,7 +45,7 @@ public class UsuarioService { // implements UserDetailsService {
 			// service.
 			// Início Adicionamos esse códgo para cadastrar uma pessoa para o usuário novo
 			usuario = repository.save(usuario);
-			Pessoa pessoa = new Pessoa();
+			PessoaFisica pessoa = new PessoaFisica();
 			pessoa.setNome("Usuário Novo");
 			pessoa.setEmail(usuario.getUsername());
 			pessoa.setUsuario(usuario);
@@ -61,7 +60,7 @@ public class UsuarioService { // implements UserDetailsService {
 			Grupo grupo = new Grupo();
 			grupo.setId(2L);
 			pessoa.getGrupos().add(grupo);
-			this.pessoaRepository.save(pessoa);
+			this.pessoaFisicaRepository.save(pessoa);
 			return null;
 			// Fim
 
