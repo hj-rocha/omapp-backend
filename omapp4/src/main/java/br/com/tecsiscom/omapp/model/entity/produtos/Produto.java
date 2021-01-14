@@ -48,6 +48,13 @@ public class Produto implements Serializable{
 	//Custo total do produto é a soma de todas as despesas
 	private BigDecimal custo;
 	
+	//@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "produto_imposto",
+			joinColumns = @JoinColumn(name = "produto_id"),
+			inverseJoinColumns = @JoinColumn(name = "imposto_id"))
+	private Set<Imposto> impostos;
+	
 	private BigDecimal venda;
 	
 	//@JsonIgnore
@@ -67,4 +74,12 @@ public class Produto implements Serializable{
 			inverseJoinColumns = @JoinColumn(name = "pessoa_id"))
 	private Set<Pessoa> fornecedores = new HashSet<>();
 	
+	public boolean removerImposto(Imposto imposto) {
+		return getImpostos().remove(imposto);
+	}
+	
+	public boolean adicionarImposto(Imposto 
+			imposto) {
+		return getImpostos().add(imposto);
+	}
 }
