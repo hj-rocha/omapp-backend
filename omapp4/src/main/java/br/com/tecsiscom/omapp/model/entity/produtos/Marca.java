@@ -1,18 +1,17 @@
 package br.com.tecsiscom.omapp.model.entity.produtos;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
-import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,4 +27,5 @@ public class Marca {
 	
 	@Column(nullable = false)
 	private String nome;
+
 }

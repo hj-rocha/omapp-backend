@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +17,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import lombok.Data;
@@ -48,12 +52,9 @@ public class Produto implements Serializable{
 	//Custo total do produto é a soma de todas as despesas
 	private BigDecimal custo;
 	
-	//@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "produto_marca",
-			joinColumns = @JoinColumn(name = "produtoi_id"),
-			inverseJoinColumns = @JoinColumn(name = "marca_id"))
-	private java.util.Set<Marca> marcas;
+	@ManyToOne
+	//@JoinColumn(name = "marca_id", nullable = true)
+	private Marca marca;
 	
 	//@JsonIgnore
 	@ManyToMany

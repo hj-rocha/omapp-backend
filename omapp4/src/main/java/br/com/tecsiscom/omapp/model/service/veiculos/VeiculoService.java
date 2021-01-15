@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
+import br.com.tecsiscom.omapp.model.entity.produtos.Marca;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
 import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
 
@@ -19,6 +20,12 @@ public class VeiculoService {
 	
 	public Veiculo salvar(Veiculo veiculo) {
 
+		if(veiculo.getMarca().getId()==null) {
+			Marca marca = new Marca();
+			marca.setId(1L);
+			veiculo.setMarca(marca);
+		}
+		
 		return veiculoRepository.save(veiculo);
 	}
 	

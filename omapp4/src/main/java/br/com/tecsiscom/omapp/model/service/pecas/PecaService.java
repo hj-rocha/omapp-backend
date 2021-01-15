@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
 import br.com.tecsiscom.omapp.model.entity.pecas.Peca;
+import br.com.tecsiscom.omapp.model.entity.produtos.Marca;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
 import br.com.tecsiscom.omapp.model.repository.pecas.PecaRepository;
 import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
@@ -20,6 +21,11 @@ public class PecaService {
 	
 	
 	public Peca salvar(Peca peca) {
+		if(peca.getMarca().getId()==null) {
+			Marca marca = new Marca();
+			marca.setId(1L);
+			peca.setMarca(marca);
+		}
 
 		return pecaRepository.save(peca);
 	}

@@ -56,7 +56,7 @@ public class Veiculo extends Produto{
 	
 	private Combustivel combustivel;
 
-	private String marca;
+	//private String marca;
 	
 	private String modelo;
 	
