@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.model.entity.manutencoes;
+package br.com.tecsiscom.omapp.model.entity.servicos;
 
 import javax.persistence.Entity;
 

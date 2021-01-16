@@ -130,5 +130,20 @@ public @interface CheckSecurity {
 		public @interface PodeConsultar {
 		}
 	}
+	
+	public @interface Manutencoes {
+
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_MANUTENCOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {
+		}
+
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_MANUTENCOES')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {
+		}
+	}
 
 }

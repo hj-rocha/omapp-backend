@@ -42,10 +42,10 @@ public class Manutencao {
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	private Date dataTermino;
 	
-	private Pessoa responsavel;
-	
-	private Veiculo veiculo;
-	
-	@OneToMany(mappedBy = "despesa")
-	private List<Despesa> despesas = new ArrayList<Despesa>();
+//	private Pessoa responsavel;
+//	
+//	private Veiculo veiculo;
+//	
+//	@OneToMany(mappedBy = "despesa")
+//	private List<Despesa> despesas = new ArrayList<Despesa>();
 }

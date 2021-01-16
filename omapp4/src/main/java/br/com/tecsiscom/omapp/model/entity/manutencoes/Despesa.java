@@ -3,6 +3,7 @@ package br.com.tecsiscom.omapp.model.entity.manutencoes;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -41,11 +43,13 @@ public class Despesa {
 
 	private String Nome;
 	
+	@OneToOne( cascade = CascadeType.ALL)
+	@JoinColumn(name="pessoa_id",referencedColumnName = "id")
 	private Pessoa responsavel;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Manutencao manutencao;
+//	@ManyToOne
+//	@JoinColumn(nullable = false)
+//	private Manutencao manutencao;
 	
 	private BigDecimal valorTotal;
 

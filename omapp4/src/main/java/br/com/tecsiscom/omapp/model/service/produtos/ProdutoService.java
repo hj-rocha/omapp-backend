@@ -50,7 +50,7 @@ public class ProdutoService {
 		try {
 			produtoRepository.deleteById(produtoId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new PessoaNaoEncontradaException(produtoId);
+			throw new ProdutoNaoEncontradoException(produtoId);
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 					String.format("Produto de código %d não pode ser removido, pois está em uso", produtoId));
