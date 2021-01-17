@@ -29,9 +29,9 @@ public class ServicoPrestado extends Despesa{
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	private Date dataEntrega;
 
-	@OneToOne( cascade = CascadeType.ALL)
-	@JoinColumn(name="servico_id",referencedColumnName = "id")
-	//@ManyToOne
+	//@OneToOne( cascade = CascadeType.ALL)
+	//@JoinColumn(name="servico_id",referencedColumnName = "id")
+	@ManyToOne
 	private Servico servico;
 	
 }

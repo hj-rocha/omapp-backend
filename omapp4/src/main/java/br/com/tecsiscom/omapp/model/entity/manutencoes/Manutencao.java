@@ -25,6 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
@@ -66,6 +67,7 @@ public class Manutencao implements Serializable{
 	@ManyToOne
 	private Veiculo veiculo;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "manutencao")
 	@Column(nullable = true)
 	private List<Despesa> despesas = new ArrayList<Despesa>();

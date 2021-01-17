@@ -1,9 +1,11 @@
 package br.com.tecsiscom.omapp.model.entity.manutencoes;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -38,22 +41,27 @@ public class Despesa {
 	private Long id;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
+	//@Temporal(TemporalType.DATE)
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private Date data;
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime data;
+	
+	//private Date data;
 
-	private String Nome;
+	//private String Nome;
 	
 	//@JsonIgnore
-	@OneToOne( cascade = CascadeType.ALL)
-	@JoinColumn(name="responsavel_id",referencedColumnName = "id")
+	//@OneToOne( cascade = CascadeType.ALL)
+	//@JoinColumn(name="responsavel_id",referencedColumnName = "id")
+	@ManyToOne
 	private Pessoa responsavel;
 	
-	@JsonIgnore
+	//@JsonIgnore
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Manutencao manutencao;
 	
-	private BigDecimal totalManutencao;
+	//private BigDecimal total;
 
 }
