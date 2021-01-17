@@ -40,10 +40,10 @@ public class PecaController {
 	@CheckSecurity.Produtos.PodeConsultar
 	@GetMapping()
 	public List<Peca> listar() {
+		
 		List<Peca> pecas = repository.findAll();
 		
-		return 
-				pecas;
+		return pecas;
 	}
 	
 	@CheckSecurity.Produtos.PodeConsultar

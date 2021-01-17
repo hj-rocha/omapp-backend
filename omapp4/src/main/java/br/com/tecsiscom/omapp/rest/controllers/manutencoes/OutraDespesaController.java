@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.rest.controllers.veiculos;
+package br.com.tecsiscom.omapp.rest.controllers.manutencoes;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,58 +22,54 @@ import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
+import br.com.tecsiscom.omapp.model.entity.manutencoes.OutraDespesa;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
-import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
-import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
-import br.com.tecsiscom.omapp.model.service.veiculos.VeiculoService;
+import br.com.tecsiscom.omapp.model.repository.manutencoes.OutraDespesaRepository;
+import br.com.tecsiscom.omapp.model.service.manutencoes.OutraDespesaService;
 
 @RestController
-@RequestMapping("/veiculos")
-public class VeiculoController {
+@RequestMapping("/outras_despesas")
+public class OutraDespesaController {
+
 	
 	@Autowired
-	VeiculoService service;
+	OutraDespesaService service;
 	
 	@Autowired
-	VeiculoRepository repository;
+	OutraDespesaRepository repository;
 	
-	@CheckSecurity.Produtos.PodeConsultar
+	@CheckSecurity.Manutencoes.PodeConsultar
 	@GetMapping()
-	public List<Veiculo> listar() {
-		List<Veiculo> veiculos = repository.findAll();
+	public List<OutraDespesa> listar() {
 		
-		return veiculos;
+		List<OutraDespesa> outraDespesas = repository.findAll();
+		
+		return outraDespesas;
 	}
 	
-	@CheckSecurity.Produtos.PodeConsultar
-	@GetMapping("/{veiculoId}")
-	public Optional<Veiculo> buscar(@PathVariable Long veiculoId) {
-		Optional<Veiculo> veiculo =repository.findById(veiculoId);
-		return veiculo;
-	}
-	
-	@GetMapping("/placa/{veiculoPlaca}")
-	public List<Veiculo> buscarPorPlaca(@PathVariable String veiculoPlaca) {
-		List<Veiculo> veiculos = repository.findByPlacaStartingWith(veiculoPlaca);
-		return veiculos;
+	@CheckSecurity.Manutencoes.PodeConsultar
+	@GetMapping("/{outraDespesaId}")
+	public Optional<OutraDespesa> buscar(@PathVariable Long outraDespesaId) {
+		Optional<OutraDespesa> outraDespesa =repository.findById(outraDespesaId);
+		return outraDespesa;
 	}
 	
 	
-	@CheckSecurity.Produtos.PodeEditar
+	@CheckSecurity.Manutencoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Veiculo salvar(@RequestBody @Valid Veiculo veiculo) {
+	public OutraDespesa salvar(@RequestBody @Valid OutraDespesa outraDespesa) {
 		try {
-			return service.salvar(veiculo);
+			return service.salvar(outraDespesa);
 		} catch (ProdutoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 		
 	}
 	
-	@CheckSecurity.Produtos.PodeEditar
-	@DeleteMapping("/{veiculoId}")
-	public ResponseEntity<Produto> remover(@PathVariable("veiculoId") Long id) {
+	@CheckSecurity.Manutencoes.PodeEditar
+	@DeleteMapping("/{outraDespesaId}")
+	public ResponseEntity<Produto> remover(@PathVariable("outraDespesaId") Long id) {
 
 		try {
 			service.remover(id);
@@ -87,3 +83,4 @@ public class VeiculoController {
 	}
 
 }
+

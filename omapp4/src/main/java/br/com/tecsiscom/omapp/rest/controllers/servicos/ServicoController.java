@@ -54,6 +54,13 @@ public class ServicoController {
 		return servico;
 	}
 	
+	@CheckSecurity.Produtos.PodeConsultar
+	@GetMapping("/nome/{servicoNome}")
+	public List<Servico> buscarPorNome(@PathVariable String servicoNome) {
+		List<Servico> servicos =repository.findByNomeStartingWith(servicoNome);
+		return servicos;
+	}
+	
 	
 	@CheckSecurity.Produtos.PodeEditar
 	@PostMapping
