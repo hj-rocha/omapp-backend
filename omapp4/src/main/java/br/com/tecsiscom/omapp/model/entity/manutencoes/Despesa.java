@@ -41,12 +41,12 @@ public class Despesa {
 	private Long id;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	//@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
 	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime data;
-	
+	//@Column(nullable = false, columnDefinition = "datetime")
+	//private LocalDateTime data;
+	private Date data;
 	//private Date data;
 
 	//private String Nome;
