@@ -80,6 +80,13 @@ public class ManutencaoController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
+	
+	@CheckSecurity.Manutencoes.PodeEditar
+	@PostMapping("/{manutencaoId}/status/{status}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Manutencao alterarStatusManutencao(@PathVariable("manutencaoId") Long manutencaoId, @PathVariable("status") Boolean status) {
+			return manutencaoService.alterarStatusManutencao(manutencaoId, status);
+	}
 
 }
 
