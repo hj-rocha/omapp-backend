@@ -1,6 +1,10 @@
 package br.com.tecsiscom.omapp.model.service.manutencoes;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+
+import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -69,6 +73,11 @@ public class ManutencaoService {
 
 		Manutencao manutencao = buscarOuFalhar(id);
 		manutencao.setAtiva(status);
+		if(status) {
+			manutencao.setDataSaida(null);
+		} else {
+			manutencao.setDataSaida(LocalDateTime.now());
+		}
 		return manutencaoRepository.save(manutencao);
 	}
 	

@@ -1,5 +1,6 @@
 package br.com.tecsiscom.omapp.model.service.manutencoes;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class ServicoPrestadoService {
 		
 		ServicoPrestado s = this.buscarOuFalhar(servicoPrestadoId);
 		
-		s.setDataEntrega(new Date());
+		s.setDataEntrega(LocalDateTime.now());
 		
 		servicoPrestadoRepository.save(s);
 	}

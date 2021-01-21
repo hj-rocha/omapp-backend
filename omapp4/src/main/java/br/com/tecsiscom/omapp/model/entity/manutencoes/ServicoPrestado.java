@@ -1,5 +1,6 @@
 package br.com.tecsiscom.omapp.model.entity.manutencoes;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -24,11 +25,12 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class ServicoPrestado extends Despesa{
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private Date dataEntrega;
-
+	//@JsonFormat(pattern = "dd/MM/yyyy")
+	//@Temporal(TemporalType.DATE)
+	//@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+	//private Date dataEntrega;
+	private LocalDateTime dataEntrega;
+	
 	//@OneToOne( cascade = CascadeType.ALL)
 	//@JoinColumn(name="servico_id",referencedColumnName = "id")
 	@ManyToOne

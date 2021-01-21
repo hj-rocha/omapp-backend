@@ -53,10 +53,14 @@ public class Manutencao implements Serializable{
 	private LocalDateTime dataEntrada;
 	
 
-	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "datetime(6)")
-	private LocalDateTime dataTermino;
+//	@UpdateTimestamp
+//	@Column(nullable = false, columnDefinition = "datetime(6)")
+//	private LocalDateTime dataTermino;
 	
+	//@JsonFormat(pattern = "dd/MM/yyyy")
+	//@Temporal(TemporalType.DATE)
+	//@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+	private LocalDateTime dataSaida;	
 
 	private boolean ativa = true;
 	
