@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @PrimaryKeyJoinColumn(name="id")
 public class PessoaJuridica extends Pessoa{
 
-	private String razaosocial;
+	private String razaoSocial;
 
 	@CNPJ(message = "CNPJ inválido")
 	private String cnpj;
