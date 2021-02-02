@@ -64,11 +64,13 @@ public class Manutencao implements Serializable{
 
 	private boolean ativa = true;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
+	@JoinColumn( nullable = false)
 	private Pessoa responsavelManutencao;
 	
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
+	@JoinColumn( nullable = false)
 	private Veiculo veiculo;
 
 	@JsonIgnore

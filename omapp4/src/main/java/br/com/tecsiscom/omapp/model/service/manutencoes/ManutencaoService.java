@@ -1,10 +1,7 @@
 package br.com.tecsiscom.omapp.model.service.manutencoes;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.ManuntencaoConsolidadaException;
 import br.com.tecsiscom.omapp.exception.ManutencaoNaoEncontradaException;
+import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
 import br.com.tecsiscom.omapp.model.entity.manutencoes.Manutencao;
 import br.com.tecsiscom.omapp.model.repository.manutencoes.ManutencaoRepository;
@@ -35,8 +33,17 @@ public class ManutencaoService {
 //		if (exists) {
 //			throw new ManutencaoCadastradoException(manutencao.getNome());
 //		}
+		
+		Manutencao m;
+		try {
+			m= manutencaoRepository.save(manutencao);			
+		} catch (Exception e) {
+			throw new NegocioException("Deve haver uma placa e uma pessoa previamente cadastradas no sistema.");
+		}
 
-		return manutencaoRepository.save(manutencao);
+
+
+		return m;
 	}
 
 	public void remover(Long manutencaoId) {

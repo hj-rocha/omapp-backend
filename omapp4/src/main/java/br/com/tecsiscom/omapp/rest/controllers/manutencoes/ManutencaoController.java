@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,9 @@ public class ManutencaoController {
 			return manutencaoService.salvar(manutencao);
 		} catch (ProdutoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
+		}
+		catch (HttpMessageNotReadableException e) {
+			throw new NegocioException("Deve ser informados uma placa e uma pessoa cadastradoas.");
 		}
 	}
 	
