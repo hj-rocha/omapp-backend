@@ -9,10 +9,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
+import br.com.tecsiscom.omapp.exception.ManuntencaoConsolidadaException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
 import br.com.tecsiscom.omapp.exception.UsuarioNaoEncontradoException;
+import br.com.tecsiscom.omapp.model.entity.manutencoes.Manutencao;
 import br.com.tecsiscom.omapp.model.entity.manutencoes.ServicoPrestado;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Usuario;
+import br.com.tecsiscom.omapp.model.repository.manutencoes.ManutencaoRepository;
 import br.com.tecsiscom.omapp.model.repository.manutencoes.ServicoPrestadoRepository;
 
 @Service
@@ -21,7 +24,17 @@ public class ServicoPrestadoService {
 	@Autowired
 	ServicoPrestadoRepository servicoPrestadoRepository;
 	
+	@Autowired
+	ManutencaoService manutencaoService;
+	
 	public ServicoPrestado salvar(ServicoPrestado servicoPrestado) {
+		
+	Manutencao manu = this.manutencaoService.buscarOuFalhar(servicoPrestado.getManutencao().getId());
+		
+	if(!manu.isAtiva()) {
+		throw new ManuntencaoConsolidadaException(
+				"Não é possível atribuir despesas a este veículo porque a manutenção dele está fechada.");		
+	}
 		
 		return servicoPrestadoRepository.save(servicoPrestado);
 	}
