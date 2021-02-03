@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -34,6 +35,7 @@ public class Veiculo extends Produto{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(unique=true)
 	private String renavam;
 
 	private String RNTRC;

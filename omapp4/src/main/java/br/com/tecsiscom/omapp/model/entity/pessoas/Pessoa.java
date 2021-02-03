@@ -20,6 +20,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -48,6 +49,7 @@ public class Pessoa {
 	private String nome;
 	
 	@Column(nullable = true)
+	@Email(message = "e-mail inválido")
 	private String email;
 	
 	
@@ -73,7 +75,7 @@ public class Pessoa {
 	private String anotacoes;
 	
 	@OneToOne( cascade = CascadeType.ALL)
-	@JoinColumn(name="usuario_id",referencedColumnName = "id")
+	@JoinColumn(name="usuario_id",referencedColumnName = "id", unique = true)
     public Usuario usuario;
 
 	//@JsonIgnore
