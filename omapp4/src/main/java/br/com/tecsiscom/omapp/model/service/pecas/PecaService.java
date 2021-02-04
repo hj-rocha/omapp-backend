@@ -1,10 +1,15 @@
 package br.com.tecsiscom.omapp.model.service.pecas;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.tecsiscom.omapp.exception.CampoUnicoException;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
 import br.com.tecsiscom.omapp.model.entity.pecas.Peca;
@@ -27,7 +32,16 @@ public class PecaService {
 //			peca.setMarca(marca);
 //		}
 
-		return pecaRepository.save(peca);
+		Peca p=null;
+		try {
+			p=pecaRepository.save(peca);
+		} catch (Exception e) {
+			if (e instanceof DataIntegrityViolationException) {
+				System.out.println(e.toString());
+				throw new CampoUnicoException("código interno e código de barras");
+			}
+		}
+		return p;
 	}
 	
 	public void remover(Long pecaId) {
