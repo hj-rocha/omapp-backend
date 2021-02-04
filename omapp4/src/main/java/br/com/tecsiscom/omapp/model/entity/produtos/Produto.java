@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,11 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import lombok.Data;
@@ -44,7 +43,9 @@ public class Produto implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 50)
+	@NotEmpty(message = "Nome não pode estar vazio")
+	@Size(min = 2, max = 50, message = "Nome deve ter min: 2 e max 50 caracteres")
 	private String nome;
 
 	private String descricao;
@@ -53,7 +54,7 @@ public class Produto implements Serializable{
 	private BigDecimal custo;
 	
 	@ManyToOne
-	//@JoinColumn(name = "marca_id", nullable = true)
+	@JoinColumn(columnDefinition="integer", name = "marca_id", nullable = true)
 	private Marca marca;
 	
 	//@JsonIgnore

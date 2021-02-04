@@ -29,6 +29,7 @@ public class EnderecoPessoa {
 	//@ManyToOne(fetch = FetchType.LAZY)
 	@ManyToOne
 	@JoinColumn(name = "endereco_cidade_id")
+	//@JoinColumn(columnDefinition="integer", name = "endereco_cidade_id", nullable = true)
 	private Cidade cidade;
 	
 }

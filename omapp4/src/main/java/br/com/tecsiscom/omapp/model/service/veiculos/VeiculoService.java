@@ -20,11 +20,11 @@ public class VeiculoService {
 	
 	public Veiculo salvar(Veiculo veiculo) {
 
-		if(veiculo.getMarca().getId()==null) {
-			Marca marca = new Marca();
-			marca.setId(1L);
-			veiculo.setMarca(marca);
-		}
+//		if(veiculo.getMarca().getId()==null) {
+//			Marca marca = new Marca();
+//			marca.setId(1L);
+//			veiculo.setMarca(marca);
+//		}
 		
 		return veiculoRepository.save(veiculo);
 	}

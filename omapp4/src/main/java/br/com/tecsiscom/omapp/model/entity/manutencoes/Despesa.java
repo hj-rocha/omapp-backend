@@ -40,15 +40,16 @@ public class Despesa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	@CreationTimestamp
-	//@Column(nullable = false, columnDefinition = "datetime")
-	//private LocalDateTime data;
-	private Date data;
-	//private Date data;
+//	@JsonFormat(pattern = "dd/MM/yyyy")
+//	@Temporal(TemporalType.DATE)
+//	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+//	@CreationTimestamp
+//	private Date data;
 
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime data;
+	
 	//private String Nome;
 	
 	//@JsonIgnore

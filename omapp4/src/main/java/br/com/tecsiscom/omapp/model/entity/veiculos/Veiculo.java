@@ -13,7 +13,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
+import org.apache.logging.log4j.message.Message;
 import org.hibernate.annotations.ManyToAny;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -46,6 +49,9 @@ public class Veiculo extends Produto{
 		inverseJoinColumns = @JoinColumn(name = "proprietario"))
 	private Set<Pessoa> proprietarios = new HashSet<>(); 
 	
+	@Column(nullable = false)
+	@NotEmpty(message = "Placa não pode estar vazia")
+	@Size(min = 7, max = 7, message = "Placa deve ter 7 dígitos")
 	private String placa;
 	
 	private String placaAnterior;

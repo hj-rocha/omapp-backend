@@ -21,11 +21,11 @@ public class PecaService {
 	
 	
 	public Peca salvar(Peca peca) {
-		if(peca.getMarca().getId()==null) {
-			Marca marca = new Marca();
-			marca.setId(1L);
-			peca.setMarca(marca);
-		}
+//		if(peca.getMarca().getId()==null) {
+//			Marca marca = new Marca();
+//			marca.setId(1L);
+//			peca.setMarca(marca);
+//		}
 
 		return pecaRepository.save(peca);
 	}
