@@ -6,10 +6,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.tecsiscom.omapp.exception.CampoUnicoException;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
 import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Cidade;
 import br.com.tecsiscom.omapp.model.entity.geografia.enderecos.Estado;
+import br.com.tecsiscom.omapp.model.entity.pecas.Peca;
 import br.com.tecsiscom.omapp.model.entity.pessoas.EnderecoPessoa;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
 import br.com.tecsiscom.omapp.model.entity.pessoas.PessoaFisica;
@@ -41,7 +43,16 @@ public class PessoaFisicaService {
 			
 		}
 		
-		return pessoaRepository.save(pessoa);
+		PessoaFisica p=null;
+		try {
+			p=pessoaRepository.save(pessoa);
+		} catch (Exception e) {
+			if (e instanceof DataIntegrityViolationException) {
+				System.out.println(e.toString());
+				throw new CampoUnicoException("cpf");
+			}
+		}
+		return p;
 	}
 	
 	@Transactional

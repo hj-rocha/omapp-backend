@@ -1,5 +1,6 @@
 package br.com.tecsiscom.omapp.model.entity.pessoas;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
@@ -18,5 +19,6 @@ public class PessoaFisica extends Pessoa{
 	private String identidade;
 
 	@CPF(message = "CPF inválido")
+	@Column(unique = true)
 	private String cpf;
 }
