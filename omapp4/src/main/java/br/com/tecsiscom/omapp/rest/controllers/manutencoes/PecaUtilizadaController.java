@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.rest.controllers.pecas;
+package br.com.tecsiscom.omapp.rest.controllers.manutencoes;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,62 +22,64 @@ import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
-import br.com.tecsiscom.omapp.model.entity.pecas.Peca;
+import br.com.tecsiscom.omapp.model.entity.manutencoes.PecaUtilizada;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
-import br.com.tecsiscom.omapp.model.entity.servicos.Servico;
-import br.com.tecsiscom.omapp.model.repository.pecas.PecaRepository;
-import br.com.tecsiscom.omapp.model.service.pecas.PecaService;
+import br.com.tecsiscom.omapp.model.repository.manutencoes.PecaUtilizadaRepository;
+import br.com.tecsiscom.omapp.model.service.manutencoes.PecaUtilizadaService;
 
 @RestController
-@RequestMapping("/pecas")
-public class PecaController {
+@RequestMapping("/pecas_utilizadas")
+public class PecaUtilizadaController {
+
+	@Autowired
+	PecaUtilizadaService service;
 	
 	@Autowired
-	PecaService service;
+	PecaUtilizadaRepository repository;
 	
-	@Autowired
-	PecaRepository repository;
-	
-	@CheckSecurity.Produtos.PodeConsultar
+	@CheckSecurity.Manutencoes.PodeConsultar
 	@GetMapping()
-	public List<Peca> listar() {
+	public List<PecaUtilizada> listar() {
 		
-		List<Peca> pecas = repository.findAll();
+		List<PecaUtilizada> pecaUtilizadas = repository.findAll();
 		
-		return pecas;
+		return pecaUtilizadas;
 	}
 	
-	@CheckSecurity.Produtos.PodeConsultar
-	@GetMapping("/{pecaId}")
-	public Optional<Peca> buscar(@PathVariable Long pecaId) {
-		Optional<Peca> peca =repository.findById(pecaId);
-		return peca;
-	}
-	
-	@CheckSecurity.Produtos.PodeConsultar
-	@GetMapping("/nome/{pecaNome}")
-	public List<Peca> buscarPorNome(@PathVariable String pecaNome) {
-		List<Peca> pecas = repository.findByNomeStartingWith(pecaNome);
-		return pecas;
+	@CheckSecurity.Manutencoes.PodeConsultar
+	@GetMapping("/manutencao/{manutencaoId}")
+	public List<PecaUtilizada> listarPOrManutencao(@PathVariable Long manutencaoId) {
+		
+		List<PecaUtilizada> pecaUtilizadas = repository.findByManutencaoId(manutencaoId);
+		
+		return pecaUtilizadas;
 	}
 	
 	
 	
-	@CheckSecurity.Produtos.PodeEditar
+	@CheckSecurity.Manutencoes.PodeConsultar
+	@GetMapping("/{pecaUtilizadaId}")
+	public Optional<PecaUtilizada> buscar(@PathVariable Long pecaUtilizadaId) {
+		Optional<PecaUtilizada> pecaUtilizada =repository.findById(pecaUtilizadaId);
+		return pecaUtilizada;
+	}
+	
+	
+	@CheckSecurity.Manutencoes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Peca salvar(@RequestBody @Valid Peca peca) {
+	public PecaUtilizada salvar(@RequestBody @Valid PecaUtilizada pecaUtilizada) {
 		try {
-			return service.salvar(peca);
+			return service.salvar(pecaUtilizada);
 		} catch (ProdutoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 		
 	}
 	
-	@CheckSecurity.Produtos.PodeEditar
-	@DeleteMapping("/{pecaId}")
-	public ResponseEntity<Produto> remover(@PathVariable("pecaId") Long id) {
+	@CheckSecurity.Manutencoes.PodeEditar
+	@DeleteMapping("/{pecaUtilizadaId}")
+	public ResponseEntity<Produto> remover(@PathVariable("pecaUtilizadaId") Long id) {
 
 		try {
 			service.remover(id);
@@ -89,5 +91,8 @@ public class PecaController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
+	
+
 
 }
+
