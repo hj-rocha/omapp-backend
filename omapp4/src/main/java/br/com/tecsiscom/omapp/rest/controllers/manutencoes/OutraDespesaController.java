@@ -23,6 +23,7 @@ import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
 import br.com.tecsiscom.omapp.model.entity.manutencoes.OutraDespesa;
+import br.com.tecsiscom.omapp.model.entity.manutencoes.ServicoPrestado;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
 import br.com.tecsiscom.omapp.model.repository.manutencoes.OutraDespesaRepository;
 import br.com.tecsiscom.omapp.model.service.manutencoes.OutraDespesaService;
@@ -45,6 +46,15 @@ public class OutraDespesaController {
 		List<OutraDespesa> outraDespesas = repository.findAll();
 		
 		return outraDespesas;
+	}
+	
+	@CheckSecurity.Manutencoes.PodeConsultar
+	@GetMapping("/manutencao/{manutencaoId}")
+	public List<OutraDespesa> listarPorManutencao(@PathVariable Long manutencaoId) {
+		
+		List<OutraDespesa> outrasDepesas = repository.findByManutencaoId(manutencaoId);
+		
+		return outrasDepesas;
 	}
 	
 	@CheckSecurity.Manutencoes.PodeConsultar

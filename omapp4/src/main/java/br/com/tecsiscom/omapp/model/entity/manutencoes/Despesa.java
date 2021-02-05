@@ -50,6 +50,8 @@ public class Despesa {
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime data;
 	
+	private BigDecimal total;
+	
 	//private String Nome;
 	
 	//@JsonIgnore
