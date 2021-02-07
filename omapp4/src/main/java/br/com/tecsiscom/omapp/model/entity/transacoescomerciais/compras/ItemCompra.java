@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class ItemCompra extends ItemTransacaoComercial {
 
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
     private Compra compra;

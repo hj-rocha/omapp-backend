@@ -2,6 +2,8 @@ package br.com.tecsiscom.omapp.model.repository.transacoescomerciais.devolucaove
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ItemDevolucaoVendaAoClienteRepository extends JpaRepository<ItemDevolucaoVendaAoClienteRepository, Long>{
+import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.devolucaovendaaocliente.ItemDevolucaoDeVendaAoCliente;
+
+public interface ItemDevolucaoVendaAoClienteRepository extends JpaRepository<ItemDevolucaoDeVendaAoCliente, Long>{
 
 }
