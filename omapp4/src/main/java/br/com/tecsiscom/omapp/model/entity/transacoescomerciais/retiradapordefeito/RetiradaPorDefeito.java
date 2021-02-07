@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-public class SaidaPorDefeito extends TransacaoComercialSaida {
+public class RetiradaPorDefeito extends TransacaoComercialSaida {
 
     private String nota;
 

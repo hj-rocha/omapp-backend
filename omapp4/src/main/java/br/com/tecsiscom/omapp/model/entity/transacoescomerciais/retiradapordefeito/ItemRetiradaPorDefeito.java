@@ -11,10 +11,10 @@ import lombok.EqualsAndHashCode;
 @Data 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-public class ItemSaidaDefeito extends ItemTransacaoComercial {
+public class ItemRetiradaPorDefeito extends ItemTransacaoComercial {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-    private SaidaPorDefeito saidaPorDefeito;
+    private RetiradaPorDefeito saidaPorDefeito;
 
 }
