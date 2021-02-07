@@ -1,6 +1,5 @@
-package br.com.tecsiscom.omapp.model.entity.estoque;
+package br.com.tecsiscom.omapp.model.entity.transacoescomerciais;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
@@ -20,22 +19,19 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemEstoque implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public abstract class ItemTransacaoComercial {
 
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+		
     private BigDecimal quantidade;
+
+    private BigDecimal valorUnitario;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-    private Produto produto;
+    private Produto produto ;
 
 }

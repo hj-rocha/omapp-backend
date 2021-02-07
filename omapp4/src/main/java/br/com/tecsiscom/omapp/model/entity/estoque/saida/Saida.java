@@ -1,27 +1,23 @@
-package br.com.tecsiscom.omapp.model.entity.estoque;
+package br.com.tecsiscom.omapp.model.entity.estoque.saida;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
+import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.TransacaoComercialSaida;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemEstoque implements Serializable{
-
+public class Saida implements Serializable{
+	
 	/**
 	 * 
 	 */
@@ -31,11 +27,9 @@ public abstract class ItemEstoque implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-    private BigDecimal quantidade;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-    private Produto produto;
+	@OneToOne
+	@JoinColumn(name="transacao_comercial_saida_id",referencedColumnName = "id", unique = true)
+    private TransacaoComercialSaida transacaoComercialSaida;
 
 }

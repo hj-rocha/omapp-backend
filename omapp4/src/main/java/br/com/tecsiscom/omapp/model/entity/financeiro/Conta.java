@@ -1,18 +1,18 @@
-package br.com.tecsiscom.omapp.model.entity.estoque;
+package br.com.tecsiscom.omapp.model.entity.financeiro;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
-import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,8 +20,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemEstoque implements Serializable{
-
+public abstract class Conta implements Serializable{
+	
 	/**
 	 * 
 	 */
@@ -32,10 +32,8 @@ public abstract class ItemEstoque implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-    private BigDecimal quantidade;
-
-	@ManyToOne
-	@JoinColumn(nullable = false)
-    private Produto produto;
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime dataCadastro;
 
 }

@@ -1,8 +1,10 @@
-package br.com.tecsiscom.omapp.model.entity.estoque;
+package br.com.tecsiscom.omapp.model.entity.transacoescomerciais;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
+import br.com.tecsiscom.omapp.model.entity.produtos.Imposto;
+import br.com.tecsiscom.omapp.model.entity.produtos.Marca;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,22 +27,20 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemEstoque implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public abstract class TransacaoComercial {
 
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-    private BigDecimal quantidade;
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime dataCadastro;
+	
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-    private Produto produto;
+    private Pessoa conferente;
 
 }

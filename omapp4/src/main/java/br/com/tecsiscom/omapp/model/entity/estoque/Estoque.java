@@ -2,15 +2,18 @@ package br.com.tecsiscom.omapp.model.entity.estoque;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
 import lombok.Data;
@@ -19,8 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemEstoque implements Serializable{
+public class Estoque implements Serializable{
 
 	/**
 	 * 
@@ -34,8 +36,16 @@ public abstract class ItemEstoque implements Serializable{
 	
     private BigDecimal quantidade;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime dataCadastro;
+	
+	@UpdateTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private LocalDateTime dataAtualizacao;
+
+	@OneToOne
+	@JoinColumn(name="produto_id",referencedColumnName = "id", unique = true)
     private Produto produto;
 
 }

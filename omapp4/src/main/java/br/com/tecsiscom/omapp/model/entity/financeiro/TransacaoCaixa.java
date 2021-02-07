@@ -1,8 +1,7 @@
-package br.com.tecsiscom.omapp.model.entity.estoque;
+package br.com.tecsiscom.omapp.model.entity.financeiro;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,14 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
+import br.com.tecsiscom.omapp.model.entity.financeiro.caixa.Caixa;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,7 +20,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class MovimentoEstoque implements Serializable{/**
+public abstract class TransacaoCaixa implements Serializable{
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
@@ -35,8 +32,10 @@ public abstract class MovimentoEstoque implements Serializable{/**
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private Date dataOperacao;
+	@ManyToOne
+	@JoinColumn(nullable = false)	
+    private Caixa caixa;
+
+	private BigDecimal valor;
+
 }
