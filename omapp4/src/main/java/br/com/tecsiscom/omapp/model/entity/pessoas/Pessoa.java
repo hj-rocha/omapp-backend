@@ -21,15 +21,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,6 +45,7 @@ public class Pessoa {
 	private Long id;
 	
 	@Column(nullable = false)
+	@NotEmpty(message = "Nome não pode estar vazio")
 	private String nome;
 	
 	@Column(nullable = true)

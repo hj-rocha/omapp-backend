@@ -53,6 +53,9 @@ public class Produto implements Serializable{
 	//Custo total do produto é a soma de todas as despesas
 	private BigDecimal custo;
 	
+	@Column(unique = true)
+	private String codigoInterno;
+	
 	@ManyToOne
 	@JoinColumn(columnDefinition="integer", name = "marca_id", nullable = true)
 	private Marca marca;
