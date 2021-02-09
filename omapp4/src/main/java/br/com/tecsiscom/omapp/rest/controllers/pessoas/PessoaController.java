@@ -95,14 +95,28 @@ public class PessoaController {
 	}
 
 	
+//	@CheckSecurity.Pessoas.PodeConsultar
+//	@Transactional
+//	@GetMapping("/nome/{pessoaNome}")
+//	public List<Pessoa> buscarPorNome(@PathVariable String pessoaNome) {
+//		List<Pessoa> pessoas = pessoaRepository.findByNomeStartingWith(pessoaNome);
+//		return pessoas;
+//	}
+
+	
 	@CheckSecurity.Pessoas.PodeConsultar
 	@Transactional
 	@GetMapping("/nome/{pessoaNome}")
-	public List<Pessoa> buscarPorNome(@PathVariable String pessoaNome) {
+	public ResponseEntity<List<Pessoa>> buscarPorNome(@PathVariable String pessoaNome) {
 		List<Pessoa> pessoas = pessoaRepository.findByNomeStartingWith(pessoaNome);
-		return pessoas;
+		
+		if (!pessoas.isEmpty()) {
+			return ResponseEntity.ok(pessoas);
+		}
+			//Ou seja, retorna 404 caso o id que estiver buscando não exista.
+		 return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
 	}
-
+	
 	@CheckSecurity.Pessoas.PodeEditar
 	//@PreAuthorize("hasAuthority('EDITAR_PESSOAS')")
 	@PostMapping
