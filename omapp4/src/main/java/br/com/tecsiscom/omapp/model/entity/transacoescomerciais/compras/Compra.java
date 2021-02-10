@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,8 +20,14 @@ import lombok.EqualsAndHashCode;
 @Data 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Compra extends TransacaoComercialEntrada {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@ManyToOne
 	@JoinColumn(nullable = false)
     private Pessoa fornecedor;

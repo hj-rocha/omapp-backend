@@ -14,6 +14,10 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class DevolucaoDeVendaAoCliente extends TransacaoComercialEntrada {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@ManyToOne
 	@JoinColumn(nullable = false)
     private Venda venda;

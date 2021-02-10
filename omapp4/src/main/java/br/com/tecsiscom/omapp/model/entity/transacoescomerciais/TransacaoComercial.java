@@ -1,5 +1,6 @@
 package br.com.tecsiscom.omapp.model.entity.transacoescomerciais;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -22,7 +23,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class TransacaoComercial {
+public abstract class TransacaoComercial implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@EqualsAndHashCode.Include
 	@Id

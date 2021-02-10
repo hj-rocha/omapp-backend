@@ -11,7 +11,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class TransacaoComercialSaida extends TransacaoComercial {
+public class TransacaoComercialSaida extends TransacaoComercial {/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 
 }

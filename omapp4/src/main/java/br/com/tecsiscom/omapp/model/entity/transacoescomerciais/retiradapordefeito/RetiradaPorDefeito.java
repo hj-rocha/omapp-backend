@@ -11,6 +11,10 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class RetiradaPorDefeito extends TransacaoComercialSaida {
 
-    private String nota;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String nota;
 
 }
