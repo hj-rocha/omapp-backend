@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.model.entity.financeiro;
+package br.com.tecsiscom.omapp.model.entity.financeiro.caixa;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,7 +12,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import br.com.tecsiscom.omapp.model.entity.financeiro.caixa.Caixa;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class TransacaoCaixa implements Serializable{
+public abstract class TransacaoFinanceira implements Serializable{
 
 	/**
 	 * 

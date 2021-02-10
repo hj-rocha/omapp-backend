@@ -49,7 +49,7 @@ public abstract class ItemConta implements Serializable {
 	
 	/**
 	 * O saldo é calculado pela diferença do valor do documento 
-	 * e a soma dos valores processados. Vaores processados são os respectivos 
+	 * e a soma dos valores processados. Valores processados são os respectivos 
 	 * créditos, recebidos das contas a receber e débitos, recebidos das contas a 
 	 * pagar.
 	 */

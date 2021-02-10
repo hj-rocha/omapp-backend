@@ -16,8 +16,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import br.com.tecsiscom.omapp.model.entity.financeiro.Credito;
-import br.com.tecsiscom.omapp.model.entity.financeiro.Debito;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,6 +28,9 @@ public class Caixa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(columnDefinition = "boolean default false")
+	private Boolean fechado =false;
 	
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")

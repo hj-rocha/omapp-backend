@@ -265,5 +265,35 @@ public @interface CheckSecurity {
 		public @interface PodeConsultar {
 		}
 	}
+	
+	public @interface Financeiros {
+
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_FINANCEIROS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {
+		}
+
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_FINANCEIROS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {
+		}
+	}
+	
+	public @interface FinanceirosPessoais {
+
+		@PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_FINANCEIROS_PESSOAIS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeEditar {
+		}
+
+		@PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_FINANCEIROS_PESSOAIS')")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeConsultar {
+		}
+	}
 
 }

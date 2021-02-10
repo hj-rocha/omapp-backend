@@ -67,6 +67,8 @@ public class Produto implements Serializable{
 			inverseJoinColumns = @JoinColumn(name = "imposto_id"))
 	private Set<Imposto> impostos;
 	
+	private BigDecimal margemLucro;
+	
 	private BigDecimal venda;
 	
 	//@JsonIgnore

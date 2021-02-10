@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.model.entity.financeiro;
+package br.com.tecsiscom.omapp.model.entity.financeiro.caixa;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Entity
-public class Debito extends TransacaoCaixa {
+public class Debito extends TransacaoFinanceira {
 
 	/**
 	 * 

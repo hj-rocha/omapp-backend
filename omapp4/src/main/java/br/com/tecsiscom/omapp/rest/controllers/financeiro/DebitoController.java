@@ -22,7 +22,7 @@ import br.com.tecsiscom.omapp.exception.DebitoNaoEncontradoException;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
-import br.com.tecsiscom.omapp.model.entity.financeiro.Debito;
+import br.com.tecsiscom.omapp.model.entity.financeiro.caixa.Debito;
 import br.com.tecsiscom.omapp.model.repository.financeiro.DebitoRepository;
 import br.com.tecsiscom.omapp.model.service.financeiro.DebitoService;
 

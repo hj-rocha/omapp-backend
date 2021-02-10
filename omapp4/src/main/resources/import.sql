@@ -30,7 +30,7 @@ insert into omapp4.permissao (id, nome, descricao) values (021, 'EDITAR_ENTRADAS
 insert into omapp4.permissao (id, nome, descricao) values (022, 'CONSULTAR_SAIDAS', 'Permite consultar saidas');
 insert into omapp4.permissao (id, nome, descricao) values (023, 'EDITAR_SAIDAS', 'Permite criar, editar e apagar saidas');
 
-insert into omapp4.permissao (id, nome, descricao) values (024, 'CONSULTAR_CONTASPARGAR', 'Permite consultar contaspagar');
+insert into omapp4.permissao (id, nome, descricao) values (024, 'CONSULTAR_CONTASPAGAR', 'Permite consultar contaspagar');
 insert into omapp4.permissao (id, nome, descricao) values (025, 'EDITAR_CONTASPAGAR', 'Permite criar, editar e apagar contaspagar');
 
 insert into omapp4.permissao (id, nome, descricao) values (026, 'CONSULTAR_CONTASRECEBER', 'Permite consultar contasreceber');
@@ -41,6 +41,12 @@ insert into omapp4.permissao (id, nome, descricao) values (029, 'EDITAR_CAIXAS',
 
 insert into omapp4.permissao (id, nome, descricao) values (030, 'CONSULTAR_ESTOQUES', 'Permite consultar estoques');
 insert into omapp4.permissao (id, nome, descricao) values (031, 'EDITAR_ESTOQUES', 'Permite criar, editar e apagar estoques');
+
+insert into omapp4.permissao (id, nome, descricao) values (032, 'CONSULTAR_FINANCEIROS', 'Permite consultar financeiros');
+insert into omapp4.permissao (id, nome, descricao) values (033, 'EDITAR_FINANCEIROS', 'Permite criar, editar e apagar financeiros');
+
+insert into omapp4.permissao (id, nome, descricao) values (034, 'CONSULTAR_FINANCEIROS_PESSOAIS', 'Permite consultar finaceiros pessoais');
+insert into omapp4.permissao (id, nome, descricao) values (035, 'EDITAR_FINANCEIROS_PESSOAIS', 'Permite criar, editar e apagar financeiros pessoais');
 
 insert into omapp4.grupo (id,nome) values(1,'Gestor');
 insert into omapp4.grupo (id,nome) values(2,'Inscrito');
@@ -81,6 +87,10 @@ insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,28);
 insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,29);
 insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,30);
 insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,31);
+insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,32);
+insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,33);
+insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,34);
+insert into omapp4.grupo_permissao (grupo_id, permissao_id) values(1,35);
 
 
 
