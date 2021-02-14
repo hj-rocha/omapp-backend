@@ -19,4 +19,5 @@ public class EstoqueService {
 	public void remover(Long id) {
 		repository.deleteById(id);
 	}
+	
 }

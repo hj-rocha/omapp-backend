@@ -28,7 +28,7 @@ import br.com.tecsiscom.omapp.model.service.estoque.saida.ItemSaidaService;
 
 
 @RestController
-@RequestMapping(path = "/itensSaidas")
+@RequestMapping(path = "/estoques/itensSaidas")
 public class ItemSaidaController {
 
 

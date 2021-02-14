@@ -83,7 +83,7 @@ public class Produto implements Serializable{
 	
 	//@JsonIgnore
 	@ManyToMany
-	@JoinTable(name = "produto_pessoa",
+	@JoinTable(name = "produto_fornecedor",
 			joinColumns = @JoinColumn(name = "produto_id"),
 			inverseJoinColumns = @JoinColumn(name = "pessoa_id"))
 	private Set<Pessoa> fornecedores = new HashSet<>();

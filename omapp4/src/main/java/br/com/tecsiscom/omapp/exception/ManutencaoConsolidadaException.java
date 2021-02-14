@@ -1,11 +1,11 @@
 package br.com.tecsiscom.omapp.exception;
 
-public class ManuntencaoConsolidadaException extends NegocioException {
+public class ManutencaoConsolidadaException extends NegocioException {
 
 	private static final long serialVersionUID = 1L;
 	
 
-	public ManuntencaoConsolidadaException(String mensagem) {
+	public ManutencaoConsolidadaException(String mensagem) {
 		super(mensagem);
 	}
 	

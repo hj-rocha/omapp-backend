@@ -58,6 +58,11 @@ public class VeiculoController {
 		return veiculos;
 	}
 	
+	@GetMapping("/renavam/{veiculoRenavam}")
+	public List<Veiculo> listarrPorRenavam(@PathVariable String veiculoRenavam) {
+		List<Veiculo> veiculos = repository.findByRenavamStartingWith(veiculoRenavam);
+		return veiculos;
+	}
 	
 	@CheckSecurity.Produtos.PodeEditar
 	@PostMapping

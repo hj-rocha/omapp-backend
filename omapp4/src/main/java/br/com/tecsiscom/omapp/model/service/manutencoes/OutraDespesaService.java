@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
-import br.com.tecsiscom.omapp.model.entity.manutencoes.Despesa;
 import br.com.tecsiscom.omapp.model.entity.manutencoes.OutraDespesa;
 import br.com.tecsiscom.omapp.model.repository.manutencoes.OutraDespesaRepository;
 
 @Service
-public class OutraDespesaService {
+public class OutraDespesaService extends DespesaService{
 
 	@Autowired
 	OutraDespesaRepository outraDespesaRepository;
@@ -23,6 +22,9 @@ public class OutraDespesaService {
 	}
 	
 	public void remover(Long outraDespesaId) {
+		
+		super.remover(outraDespesaId);
+		
 		try {
 			outraDespesaRepository.deleteById(outraDespesaId);
 		} catch (EmptyResultDataAccessException e) {

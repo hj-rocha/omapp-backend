@@ -6,8 +6,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
+import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
-import br.com.tecsiscom.omapp.model.entity.produtos.Marca;
+import br.com.tecsiscom.omapp.exception.VeiculoNaoEncontradoException;
+import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
 import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
 
@@ -38,6 +40,12 @@ public class VeiculoService {
 			throw new EntidadeEmUsoException(
 					String.format("Veículo de código %d não pode ser removido, pois está em uso", veiculoId));
 		}
+	}
+	
+	public Veiculo buscarOuFalhar(Long pessoaId) {
+		return veiculoRepository.findById(pessoaId)
+				.orElseThrow(() -> new VeiculoNaoEncontradoException(pessoaId));
+		
 	}
 	
 }

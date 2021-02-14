@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemTransacaoComercial {
+public class ItemTransacaoComercial {
 
 	@EqualsAndHashCode.Include
 	@Id

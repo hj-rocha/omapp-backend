@@ -28,7 +28,7 @@ import br.com.tecsiscom.omapp.model.service.estoque.entrada.EntradaService;
 
 
 @RestController
-@RequestMapping(path = "/entradas")
+@RequestMapping(path = "/estoques/entradas")
 public class EntradaController {
 
 

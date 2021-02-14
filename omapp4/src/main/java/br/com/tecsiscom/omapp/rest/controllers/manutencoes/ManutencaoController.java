@@ -55,6 +55,13 @@ public class ManutencaoController {
 		return manutencao;
 	}
 	
+//	@CheckSecurity.Manutencoes.PodeConsultar
+//	@GetMapping("/{veiculoId}")
+//	public Optional<Manutencao> buscarPorVeiculo(@PathVariable Long veiculoId) {
+//		Optional<Manutencao> manutencao = Optional.ofNullable(this.repository.findByVeiculoIdAndStatus(veiculoId, true));
+//		return manutencao;
+//	}
+	
 	
 	@CheckSecurity.Manutencoes.PodeEditar
 	@PostMapping

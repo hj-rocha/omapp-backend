@@ -9,7 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
-import br.com.tecsiscom.omapp.exception.ManuntencaoConsolidadaException;
+import br.com.tecsiscom.omapp.exception.ManutencaoConsolidadaException;
 import br.com.tecsiscom.omapp.exception.ManutencaoNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
@@ -54,7 +54,7 @@ public class ManutencaoService {
 
 		if (!naoTemDespesa || !naoFoiFechada) {
 
-			throw new ManuntencaoConsolidadaException(
+			throw new ManutencaoConsolidadaException(
 					"A manutenção "+manutencaoId+ " não pode ser "
 							+ "apagada, ela já foi fechada ou tem despesas associadas.");
 		}
@@ -87,5 +87,6 @@ public class ManutencaoService {
 		}
 		return manutencaoRepository.save(manutencao);
 	}
-	
+
+
 }

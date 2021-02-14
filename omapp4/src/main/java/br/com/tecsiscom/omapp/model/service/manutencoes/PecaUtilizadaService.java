@@ -11,18 +11,22 @@ import br.com.tecsiscom.omapp.model.entity.manutencoes.PecaUtilizada;
 import br.com.tecsiscom.omapp.model.repository.manutencoes.PecaUtilizadaRepository;
 
 @Service
-public class PecaUtilizadaService {
-	
+public class PecaUtilizadaService extends DespesaService{
+
 	@Autowired
 	PecaUtilizadaRepository pecaUtilizadaRepository;
-	
+
 
 	public PecaUtilizada salvar(PecaUtilizada pecaUtilizada) {
-		
+
 		return pecaUtilizadaRepository.save(pecaUtilizada);
 	}
-	
+
 	public void remover(Long pecaUtilizadaId) {
+		
+		super.remover(pecaUtilizadaId);
+		
+
 		try {
 			pecaUtilizadaRepository.deleteById(pecaUtilizadaId);
 		} catch (EmptyResultDataAccessException e) {

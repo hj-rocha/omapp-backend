@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class TransacaoComercial implements Serializable {
+public class TransacaoComercial implements Serializable {
 
 	/**
 	 * 
@@ -40,7 +40,7 @@ public abstract class TransacaoComercial implements Serializable {
 	private LocalDateTime dataCadastro;
 	
     @Column(columnDefinition = "boolean default false")
-	private Boolean fechada = false;
+	private Boolean processada = false;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)

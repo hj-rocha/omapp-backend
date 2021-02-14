@@ -1,10 +1,7 @@
 package br.com.tecsiscom.omapp.model.service.produtos;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,11 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
-import br.com.tecsiscom.omapp.exception.PessoaNaoEncontradaException;
-import br.com.tecsiscom.omapp.exception.ProdutoCadastradoException;
 import br.com.tecsiscom.omapp.exception.ProdutoNaoEncontradoException;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Grupo;
-import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.produtos.Imposto;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
 import br.com.tecsiscom.omapp.model.repository.produtos.ProdutoRepository;

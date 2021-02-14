@@ -36,9 +36,9 @@ public class Compra extends TransacaoComercialEntrada {
 	@JoinColumn(nullable = false)
     private Pessoa comprador;
 
-	@JsonIgnore
-	@OneToMany
-	@JoinColumn(name = "compra_id")
-	List<ItemCompra> itensCompra = new ArrayList<ItemCompra>();
+//	@JsonIgnore
+//	@OneToMany
+//	@JoinColumn(name = "compra_id")
+//	List<ItemCompra> itensCompra = new ArrayList<ItemCompra>();
 
 }
