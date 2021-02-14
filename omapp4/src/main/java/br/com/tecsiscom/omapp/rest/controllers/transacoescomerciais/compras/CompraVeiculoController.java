@@ -1,12 +1,16 @@
 package br.com.tecsiscom.omapp.rest.controllers.transacoescomerciais.compras;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.CompraNaoEncontradoException;
+import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
+import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
@@ -31,7 +37,7 @@ import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
 import br.com.tecsiscom.omapp.model.service.transacoescomerciais.compras.CompraService;
 import br.com.tecsiscom.omapp.model.service.transacoescomerciais.compras.ItemCompraService;
 import br.com.tecsiscom.omapp.model.service.veiculos.VeiculoService;
-import br.com.tecsiscom.omapp.rest.models.comprasveiculos.InputItemCompraVeiculo;
+import br.com.tecsiscom.omapp.rest.model.input.InputItemCompraVeiculo;
 
 @RestController
 @RequestMapping(path = "/compras/veiculo")
@@ -109,4 +115,39 @@ public class CompraVeiculoController {
 		item.setVeiculo(veiculo.get());
 		return item;
 	}
+	
+	
+	@CheckSecurity.Compras.PodeConsultar
+	@GetMapping()
+	public List<Compra> listar() {
+		return compraRepository.findAll();
+	}
+	
+	@Transactional
+	@CheckSecurity.Compras.PodeEditar
+	@DeleteMapping("/{compraId}")
+	public ResponseEntity<Compra> remover(@PathVariable("compraId") Long id) {
+
+		try {
+			Long idItemCompraVeiculo = (itemCompraRepository.findTop1ByCompraId(id)).getId();
+			itemCompraService.remover(idItemCompraVeiculo);
+			compraService.remover(id);
+			return ResponseEntity.noContent().build();
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.notFound().build();
+
+		} catch (EntidadeEmUsoException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		}
+	}
+	
+	@Transactional
+	@CheckSecurity.Compras.PodeEditar
+	@PostMapping("/receber")
+	@ResponseStatus(HttpStatus.CREATED)
+	public InputItemCompraVeiculo receberCompraVeiculo(@RequestBody InputItemCompraVeiculo item) {
+		return item;
+	
+	}
+	
 }

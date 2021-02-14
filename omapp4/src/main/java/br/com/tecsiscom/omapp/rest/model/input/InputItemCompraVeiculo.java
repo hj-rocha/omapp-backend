@@ -1,4 +1,4 @@
-package br.com.tecsiscom.omapp.rest.models.comprasveiculos;
+package br.com.tecsiscom.omapp.rest.model.input;
 
 import java.math.BigDecimal;
 
