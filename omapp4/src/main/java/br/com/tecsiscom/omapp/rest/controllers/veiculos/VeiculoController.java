@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -72,6 +73,9 @@ public class VeiculoController {
 			return service.salvar(veiculo);
 		} catch (ProdutoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
+			/*RN:32*/
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(String.format("RENAVAM %s já está cadastrado.", veiculo.getRenavam()));
 		}
 		
 	}

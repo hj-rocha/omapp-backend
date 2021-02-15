@@ -32,7 +32,7 @@ public abstract class ItemEstoque implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-    private BigDecimal quantidade;
+    private Long quantidade;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)

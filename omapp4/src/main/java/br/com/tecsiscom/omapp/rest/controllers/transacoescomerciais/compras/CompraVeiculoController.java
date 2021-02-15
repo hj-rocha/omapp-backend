@@ -1,13 +1,16 @@
 package br.com.tecsiscom.omapp.rest.controllers.transacoescomerciais.compras;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,21 +26,38 @@ import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.CompraNaoEncontradoException;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
+import br.com.tecsiscom.omapp.exception.EstoqueVeiculoNaoUnitarioException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
+import br.com.tecsiscom.omapp.model.entity.estoque.Estoque;
+import br.com.tecsiscom.omapp.model.entity.estoque.entrada.Entrada;
+import br.com.tecsiscom.omapp.model.entity.estoque.entrada.ItemEntrada;
+import br.com.tecsiscom.omapp.model.entity.financeiro.pagar.ContaPagar;
+import br.com.tecsiscom.omapp.model.entity.financeiro.pagar.ItemContaPagar;
+import br.com.tecsiscom.omapp.model.entity.manutencoes.Manutencao;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
+import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.TransacaoComercialEntrada;
 import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.compras.Compra;
 import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.compras.ItemCompra;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
+import br.com.tecsiscom.omapp.model.repository.estoque.EstoqueRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 import br.com.tecsiscom.omapp.model.repository.produtos.ProdutoRepository;
 import br.com.tecsiscom.omapp.model.repository.transacoescomerciais.compras.CompraRepository;
 import br.com.tecsiscom.omapp.model.repository.transacoescomerciais.compras.ItemCompraRepository;
 import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
+import br.com.tecsiscom.omapp.model.service.estoque.entrada.EntradaService;
+import br.com.tecsiscom.omapp.model.service.estoque.entrada.ItemEntradaService;
+import br.com.tecsiscom.omapp.model.service.financeiro.pagar.ContasPagarService;
+import br.com.tecsiscom.omapp.model.service.financeiro.pagar.ItemContaPagarService;
+import br.com.tecsiscom.omapp.model.service.manutencoes.ManutencaoService;
+import br.com.tecsiscom.omapp.model.service.produtos.ProdutoService;
 import br.com.tecsiscom.omapp.model.service.transacoescomerciais.compras.CompraService;
 import br.com.tecsiscom.omapp.model.service.transacoescomerciais.compras.ItemCompraService;
 import br.com.tecsiscom.omapp.model.service.veiculos.VeiculoService;
 import br.com.tecsiscom.omapp.rest.model.input.InputItemCompraVeiculo;
+import br.com.tecsiscom.omapp.rest.model.input.InputRecebimentoCompraVeiculo;
+import br.com.tecsiscom.omapp.rest.model.output.OutputRecebimentoCompraVeiculo;
 
 @RestController
 @RequestMapping(path = "/compras/veiculo")
@@ -65,7 +85,28 @@ public class CompraVeiculoController {
 	ProdutoRepository produtoRepository;
 
 	@Autowired
+	ProdutoService produtoService;
+
+	@Autowired
 	PessoaRepository pessoaRepository;
+
+	@Autowired
+	EntradaService entradaService;
+
+	@Autowired
+	ItemEntradaService itemEntradaService;
+
+	@Autowired
+	ContasPagarService contaPagarSevice;
+
+	@Autowired
+	ItemContaPagarService itemContaPagarService;
+
+	@Autowired
+	ManutencaoService manutencaoService;
+
+	@Autowired
+	EstoqueRepository estoqueRepository;
 
 	@Transactional
 	@CheckSecurity.Compras.PodeEditar
@@ -87,7 +128,8 @@ public class CompraVeiculoController {
 			itemCompra.setCompra(compra);
 			itemCompra = itemCompraService.salvar(itemCompra);
 
-			//Optional<Veiculo> veiculo = this.veiculoRepository.findById(item.getVeiculo().getId());
+			// Optional<Veiculo> veiculo =
+			// this.veiculoRepository.findById(item.getVeiculo().getId());
 			Veiculo veiculo = item.getVeiculo();
 			veiculo.setProprietarios(item.getVeiculo().getProprietarios());
 			veiculo.setPlaca(item.getVeiculo().getPlaca());
@@ -115,14 +157,13 @@ public class CompraVeiculoController {
 		item.setVeiculo(veiculo.get());
 		return item;
 	}
-	
-	
+
 	@CheckSecurity.Compras.PodeConsultar
 	@GetMapping()
 	public List<Compra> listar() {
 		return compraRepository.findAll();
 	}
-	
+
 	@Transactional
 	@CheckSecurity.Compras.PodeEditar
 	@DeleteMapping("/{compraId}")
@@ -140,14 +181,106 @@ public class CompraVeiculoController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-	
+
 	@Transactional
 	@CheckSecurity.Compras.PodeEditar
-	@PostMapping("/receber")
+	@PostMapping(path = "/receber")
 	@ResponseStatus(HttpStatus.CREATED)
-	public InputItemCompraVeiculo receberCompraVeiculo(@RequestBody InputItemCompraVeiculo item) {
-		return item;
-	
+	public OutputRecebimentoCompraVeiculo receberCompraVeiculo(@RequestBody InputRecebimentoCompraVeiculo item) {
+
+		try {
+			/* Entrada */
+			Entrada entrada = new Entrada();
+			TransacaoComercialEntrada t = new TransacaoComercialEntrada();
+			t.setId(item.getIdCompra());
+			entrada.setTransacaoComercialEntrada(t);
+			entrada = entradaService.salvar(entrada);
+
+			ItemCompra icp = this.itemCompraRepository.findTop1ByCompraId(item.getIdCompra());
+			Produto p = icp.getProduto();
+			Optional<Estoque> estoque = Optional.ofNullable(this.estoqueRepository.findByProdutoId(p.getId()));
+
+			/* RN:56 */
+			if (estoque.isPresent()) {
+				if (estoque.get().getQuantidade() > 0) {
+					throw new EstoqueVeiculoNaoUnitarioException(
+							"O estoque de um veículo "
+									+ estoque.get().getProduto().getNome()
+									+" não pode ser maior que um.");
+				}
+			}
+
+			ItemEntrada i = new ItemEntrada();
+			i.setEntrada(entrada);
+			i.setQuantidade(1L);
+			i.setProduto(p);
+			/* Salva o item e atualiza o estoque */
+			i = this.itemEntradaService.salvar(i);
+			System.out.println(i.getProduto().getNome());
+			/* Entrada */
+
+			/* Contas Pagar */
+			ContaPagar cp = new ContaPagar();
+			Optional<Compra> c;
+			c = this.compraRepository.findById(item.getIdCompra());
+			cp.setCompra(c.get());
+			cp.setCredor(c.get().getFornecedor());
+			cp = this.contaPagarSevice.salvar(cp);
+
+			ItemContaPagar ict = new ItemContaPagar();
+			ict.setContaPagar(cp);
+			BigDecimal totalCompra = icp.getValorUnitario();
+			ict.setValorDocumento(totalCompra);
+			ict.setDataVencimento(item.getDataPrimeiraParcela());
+			ict = this.itemContaPagarService.salvar(ict);
+			/* Contas Pagar */
+
+			/* Atualizar Produto */
+			p.setCusto(icp.getValorUnitario());
+			p.getFornecedores().add(c.get().getFornecedor());
+			p = this.produtoService.salvar(p);
+			/* Atualizar Produto */
+
+			/* Atualizar Status Compra */
+			Optional<Compra> compra = this.compraRepository.findById(item.getIdCompra());
+			compra.get().setProcessada(true);
+			this.compraService.salvar(compra.get());
+			/* Atualizar Status Compra */
+
+			/* Abrir Manutenção */
+			Optional<Veiculo> v = this.veiculoRepository.findById(icp.getProduto().getId());
+			Optional<Pessoa> responsavel = this.pessoaRepository.findById(item.getIdConferenteLogado());
+			Manutencao m = new Manutencao();
+			m.setVeiculo(v.get());
+			m.setResponsavelManutencao(responsavel.get());
+			m = this.manutencaoService.salvar(m);
+			/* Abrir Manutenção */
+
+			/* Empcotar o retorno */
+			OutputRecebimentoCompraVeiculo out = new OutputRecebimentoCompraVeiculo();
+			out.setCompra(compra.get());
+			//out.setEntrada(entrada);
+			//Set<ItemEntrada> itens = new HashSet<ItemEntrada>();
+			//itens.add(i);
+			//out.setItensEntrada(itens);
+			out.setVeiculo(v.get());
+			out.setContaPagar(cp);
+			Set<ItemContaPagar> itensPagar = new HashSet<ItemContaPagar>();
+			itensPagar.add(ict);
+			out.setItensContaPgar(itensPagar);
+			out.setIdManutencao(m.getId());
+			//out.setEstoque(estoque.get());
+			/* Empcotar o retorno */
+
+			return out;
+
+		} catch (EmptyResultDataAccessException e) {
+			throw new EntidadeNaoEncontradaException(e.getMessage()) {
+				private static final long serialVersionUID = 1L;
+			};
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(String.format("Compra %d já está recebida.", item.getIdCompra()));
+		}
 	}
-	
+
 }

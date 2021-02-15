@@ -1,7 +1,6 @@
 package br.com.tecsiscom.omapp.model.entity.estoque;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -34,7 +33,7 @@ public class Estoque implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-    private BigDecimal quantidade;
+    private Long quantidade;
 
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")

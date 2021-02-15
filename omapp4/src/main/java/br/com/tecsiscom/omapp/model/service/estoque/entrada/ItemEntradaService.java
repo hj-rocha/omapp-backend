@@ -1,6 +1,5 @@
 package br.com.tecsiscom.omapp.model.service.estoque.entrada;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -31,7 +30,7 @@ public class ItemEntradaService {
 
 		Estoque e = new Estoque();
 		
-		//Se o produto ainda já foi cadastrado no estoque coloca o esotque em e, senão cadastra.
+		//Se o produto ainda já foi cadastrado a quatidade no estoque, senão cadastra.
 		if (!estoque.isEmpty()) {
 			e = estoque.get();
 		} else {
@@ -41,10 +40,10 @@ public class ItemEntradaService {
 		}
 		
 		//Adiciona a quantidade ao estoque atual
-		//Rever essa parte pois a tabela de estoque pode sofrer aleteração entre a leitura da quantidade e 
+		//Rever essa parte pois a tabela de estoque pode sofrer alteração entre a leitura da quantidade e 
 		//a escrita da qtd atualizada. Rever se o @Transacitional trava a tabela para outras transações.
-		e.setQuantidade(
-				new BigDecimal((e.getQuantidade().doubleValue()) + (itemEntrada.getQuantidade().doubleValue())));
+		e.setQuantidade(e.getQuantidade()+itemEntrada.getQuantidade());
+			//	new BigDecimal((e.getQuantidade().doubleValue()) + (itemEntrada.getQuantidade().doubleValue())));
 
 		//Atualizar o estoque
 		this.estoqueRepository.save(e);

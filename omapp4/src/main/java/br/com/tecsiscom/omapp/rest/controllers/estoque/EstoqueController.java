@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
-import br.com.tecsiscom.omapp.exception.EstoqueNaoEncontradoException;
+import br.com.tecsiscom.omapp.exception.EstoqueVeiculoNaoEncontradoException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.model.entity.estoque.Estoque;
 import br.com.tecsiscom.omapp.model.repository.estoque.EstoqueRepository;
@@ -57,7 +57,7 @@ public class EstoqueController {
 	public Estoque salvar(@RequestBody @Valid Estoque estoque) {
 		try {
 			return service.salvar(estoque);
-		} catch (EstoqueNaoEncontradoException e) {
+		} catch (EstoqueVeiculoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}

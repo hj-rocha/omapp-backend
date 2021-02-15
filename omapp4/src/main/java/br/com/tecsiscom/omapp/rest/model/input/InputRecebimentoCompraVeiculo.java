@@ -2,15 +2,19 @@ package br.com.tecsiscom.omapp.rest.model.input;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class InputRecebimentoCompraVeiculo {
 
 	private Long idCompra;
 	
-	private LocalDate dataPrimeiroPagamento;
+	@JsonFormat(pattern = "d/M/yyyy")
+	//@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
+	private LocalDate dataPrimeiraParcela;
 	
-	private int numeroParcela;
+	private int numeroParcelas;
 	
-	private int intervaloEntrePagamentos = 30;
+	private int intervaloEntrePagamentos = 30;	
 	
 	private Long idConferenteLogado;
 
@@ -22,20 +26,33 @@ public class InputRecebimentoCompraVeiculo {
 		this.idCompra = idCompra;
 	}
 
-	public LocalDate getDataPrimeiroPagamento() {
-		return dataPrimeiroPagamento;
+
+	/**
+	 * @return the dataPrimeiraParcela
+	 */
+	public LocalDate getDataPrimeiraParcela() {
+		return dataPrimeiraParcela;
 	}
 
-	public void setDataPrimeiroPagamento(LocalDate dataPrimeiroPagamento) {
-		this.dataPrimeiroPagamento = dataPrimeiroPagamento;
+	/**
+	 * @param dataPrimeiraParcela the dataPrimeiraParcela to set
+	 */
+	public void setDataPrimeiraParcela(LocalDate dataPrimeiraParcela) {
+		this.dataPrimeiraParcela = dataPrimeiraParcela;
 	}
 
-	public int getNumeroParcela() {
-		return numeroParcela;
+	/**
+	 * @return the numeroParcelas
+	 */
+	public int getNumeroParcelas() {
+		return numeroParcelas;
 	}
 
-	public void setNumeroParcela(int numeroParcela) {
-		this.numeroParcela = numeroParcela;
+	/**
+	 * @param numeroParcelas the numeroParcelas to set
+	 */
+	public void setNumeroParcelas(int numeroParcelas) {
+		this.numeroParcelas = numeroParcelas;
 	}
 
 	public Long getIdConferenteLogado() {

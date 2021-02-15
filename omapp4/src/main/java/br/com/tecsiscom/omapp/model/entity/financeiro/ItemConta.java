@@ -2,6 +2,7 @@ package br.com.tecsiscom.omapp.model.entity.financeiro;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class ItemConta implements Serializable {
+public class ItemConta implements Serializable {
 
 	/**
 	 * 
@@ -41,7 +42,7 @@ public abstract class ItemConta implements Serializable {
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataAtualizacao;
 
-	private LocalDateTime dataVencimento;
+	private LocalDate dataVencimento;
 
 	private BigDecimal valorDocumento;
 	
