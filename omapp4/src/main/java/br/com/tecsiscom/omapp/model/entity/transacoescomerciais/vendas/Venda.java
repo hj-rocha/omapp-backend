@@ -26,4 +26,8 @@ public class Venda extends TransacaoComercialSaida {
 	@ManyToOne
 	@JoinColumn(nullable = false)
     private Pessoa vendedor;
+	
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "venda")
+//	private List<ItemVenda> itensVenda;
+//	
 }

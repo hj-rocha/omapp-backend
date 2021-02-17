@@ -26,6 +26,7 @@ import br.com.tecsiscom.omapp.exception.VendaNaoEncontradoException;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.vendas.Venda;
 import br.com.tecsiscom.omapp.model.repository.transacoescomerciais.vendas.VendaRepository;
+import br.com.tecsiscom.omapp.model.service.transacoescomerciais.vendas.VendasService;
 
 @RestController
 @RequestMapping(path = "/vendas")
@@ -34,7 +35,7 @@ public class VendaController {
 	
 	
 	@Autowired
-	VendaController service;
+	VendasService service;
 	
 	@Autowired
 	VendaRepository repository;

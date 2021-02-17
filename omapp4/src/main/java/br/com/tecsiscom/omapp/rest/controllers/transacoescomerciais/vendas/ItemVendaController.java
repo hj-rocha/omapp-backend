@@ -64,18 +64,34 @@ public class ItemVendaController {
 		Optional<ItemVenda> itemVenda = repository.findById(itemVendaId);
 		return itemVenda;
 	}
-		
+	
 	@CheckSecurity.Vendas.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ItemVenda salvar(@RequestBody @Valid ItemVenda itemVenda) {
-
+		
 		try {
 			return service.salvar(itemVenda);
 		} catch (ItemVendaNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
+		
+//	@CheckSecurity.Vendas.PodeEditar
+//	@PostMapping("/{vendaId}")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public ItemVenda salvar(@RequestBody @Valid ItemVenda itemVenda, @PathVariable("vendaId") Long vendaId) {
+//		
+//		Venda v = new Venda();
+//		v.setId(vendaId);
+//		itemVenda.setVenda(v);
+//		
+//		try {
+//			return service.salvar(itemVenda);
+//		} catch (ItemVendaNaoEncontradoException e) {
+//			throw new NegocioException(e.getMessage());
+//		}
+//	}
 	
 	@CheckSecurity.Vendas.PodeEditar
 	@DeleteMapping("/{itemVendaId}")

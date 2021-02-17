@@ -45,7 +45,7 @@ public class VeiculoController {
 		
 		return veiculos;
 	}
-	
+
 	@CheckSecurity.Produtos.PodeConsultar
 	@GetMapping("/{veiculoId}")
 	public Optional<Veiculo> buscar(@PathVariable Long veiculoId) {
@@ -64,6 +64,15 @@ public class VeiculoController {
 		List<Veiculo> veiculos = repository.findByRenavamStartingWith(veiculoRenavam);
 		return veiculos;
 	}
+	
+	@CheckSecurity.Produtos.PodeConsultar
+	@GetMapping("/renavam/noestoque/{renavam}")
+	public List<Veiculo> listarVeiculosNoEstoquePorRenavam(@PathVariable String renavam) {
+		List<Veiculo> veiculos = service.listarPorRenavamEEstoquePositivo(renavam);
+
+		return veiculos;
+	}
+	
 	
 	@CheckSecurity.Produtos.PodeEditar
 	@PostMapping
