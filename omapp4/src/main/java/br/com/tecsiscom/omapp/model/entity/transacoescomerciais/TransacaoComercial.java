@@ -1,6 +1,7 @@
 package br.com.tecsiscom.omapp.model.entity.transacoescomerciais;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -38,6 +39,8 @@ public class TransacaoComercial implements Serializable {
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataCadastro;
+	
+	private BigDecimal total;
 	
     @Column(columnDefinition = "boolean default false")
 	private Boolean processada = false;

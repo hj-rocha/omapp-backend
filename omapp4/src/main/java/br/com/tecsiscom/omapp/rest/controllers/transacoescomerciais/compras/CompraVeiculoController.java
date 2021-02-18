@@ -33,6 +33,7 @@ import br.com.tecsiscom.omapp.model.entity.estoque.entrada.Entrada;
 import br.com.tecsiscom.omapp.model.entity.estoque.entrada.ItemEntrada;
 import br.com.tecsiscom.omapp.model.entity.financeiro.pagar.ContaPagar;
 import br.com.tecsiscom.omapp.model.entity.financeiro.pagar.ItemContaPagar;
+import br.com.tecsiscom.omapp.model.entity.financeiro.receber.ContaReceber;
 import br.com.tecsiscom.omapp.model.entity.manutencoes.Manutencao;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
@@ -41,6 +42,8 @@ import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.compras.Compra;
 import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.compras.ItemCompra;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
 import br.com.tecsiscom.omapp.model.repository.estoque.EstoqueRepository;
+import br.com.tecsiscom.omapp.model.repository.financeiro.pagar.ContaPagarRepository;
+import br.com.tecsiscom.omapp.model.repository.financeiro.pagar.ItemContaPagarRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 import br.com.tecsiscom.omapp.model.repository.produtos.ProdutoRepository;
 import br.com.tecsiscom.omapp.model.repository.transacoescomerciais.compras.CompraRepository;
@@ -58,6 +61,7 @@ import br.com.tecsiscom.omapp.model.service.transacoescomerciais.compras.ItemCom
 import br.com.tecsiscom.omapp.model.service.veiculos.VeiculoService;
 import br.com.tecsiscom.omapp.rest.model.input.InputItemCompraVeiculo;
 import br.com.tecsiscom.omapp.rest.model.input.InputRecebimentoCompraVeiculo;
+import br.com.tecsiscom.omapp.rest.model.output.OutputDespachamentoVendaVeiculo;
 import br.com.tecsiscom.omapp.rest.model.output.OutputRecebimentoCompraVeiculo;
 
 @RestController
@@ -108,9 +112,15 @@ public class CompraVeiculoController {
 
 	@Autowired
 	EstoqueRepository estoqueRepository;
-	
+
 	@Autowired
 	EstoqueService estoqueService;
+
+	@Autowired
+	ContaPagarRepository contaPagarRepository;
+
+	@Autowired
+	ItemContaPagarRepository itemContaPagarRepository;
 
 	@Transactional
 	@CheckSecurity.Compras.PodeEditar
@@ -126,9 +136,10 @@ public class CompraVeiculoController {
 		itemCompra.setQuantidade(new BigDecimal(1));
 		itemCompra.setValorUnitario(item.getValorUnitario());
 		itemCompra.setId(item.getId());
+		compra.setTotal(item.getValorUnitario());
 
 		try {
-			compra = compraService.salvar(item.getCompra());
+			compra = compraService.salvar(compra);
 			itemCompra.setCompra(compra);
 			itemCompra = itemCompraService.salvar(itemCompra);
 
@@ -158,6 +169,29 @@ public class CompraVeiculoController {
 		item.setValorUnitario(itemCompra.get().getValorUnitario());
 		item.setVeiculo(veiculo.get());
 		return item;
+	}
+
+	@CheckSecurity.Compras.PodeConsultar
+	@GetMapping("/completa/{compraId}")
+	public OutputRecebimentoCompraVeiculo buscarTudo(@PathVariable Long compraId) {
+		Optional<Compra> compra = compraRepository.findById(compraId);
+		Optional<ItemCompra> itemCompra = Optional.ofNullable(this.itemCompraRepository.findTop1ByCompraId(compraId));
+		Optional<Veiculo> veiculo = this.veiculoRepository.findById(itemCompra.get().getProduto().getId());
+
+		/* Empcotar o retorno */
+		OutputRecebimentoCompraVeiculo out = new OutputRecebimentoCompraVeiculo();
+		out.setCompra(compra.get());
+		out.setVeiculo(veiculo.get());
+		if (compra.get().getProcessada()) {
+			ContaPagar cp = this.contaPagarRepository.findByCompraId(compraId);
+			out.setContaPagar(cp);
+			out.setItensContaPagar(this.itemContaPagarRepository.findByContaPagarId(cp.getId()));
+			out.setEstoque(this.estoqueRepository.findByProdutoId(veiculo.get().getId()));
+		// out.setIdManutencao(this.manutencaoRepository.findByCompraId(compraId).getId());
+		/* Empcotar o retorno */
+		}
+
+		return out;
 	}
 
 	@CheckSecurity.Compras.PodeConsultar
@@ -205,10 +239,8 @@ public class CompraVeiculoController {
 			/* RN:56 */
 			if (estoque.isPresent()) {
 				if (estoque.get().getQuantidade() > 0) {
-					throw new EstoqueVeiculoNaoUnitarioException(
-							"O estoque de um veículo "
-									+ estoque.get().getProduto().getNome()
-									+" não pode ser maior que um.");
+					throw new EstoqueVeiculoNaoUnitarioException("O estoque de um veículo "
+							+ estoque.get().getProduto().getNome() + " não pode ser maior que um.");
 				}
 			}
 
@@ -216,9 +248,9 @@ public class CompraVeiculoController {
 			i.setEntrada(entrada);
 			i.setQuantidade(1L);
 			i.setProduto(p);
-			/* Atualiza o estoque*/
+			/* Atualiza o estoque */
 			this.estoqueService.somarItem(p, 1L);
-			/*Salva o item*/
+			/* Salva o item */
 			i = this.itemEntradaService.salvar(i);
 			/* Entrada */
 
@@ -256,6 +288,7 @@ public class CompraVeiculoController {
 			Manutencao m = new Manutencao();
 			m.setVeiculo(v.get());
 			m.setResponsavelManutencao(responsavel.get());
+			m.setCompra(compra.get());
 			m = this.manutencaoService.salvar(m);
 			/* Abrir Manutenção */
 

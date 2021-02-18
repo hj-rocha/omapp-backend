@@ -9,4 +9,5 @@ import br.com.tecsiscom.omapp.model.entity.manutencoes.Manutencao;
 public interface ManutencaoRepository extends JpaRepository<Manutencao, Long>{
 
 	Manutencao findByVeiculoIdAndAtiva(Long veiculoId, Boolean ativa);
+	Manutencao findByVendaId(Long vendaId);
 }

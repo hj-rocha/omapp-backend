@@ -25,10 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.tecsiscom.omapp.core.security.CheckSecurity;
 import br.com.tecsiscom.omapp.exception.EntidadeEmUsoException;
 import br.com.tecsiscom.omapp.exception.EntidadeNaoEncontradaException;
-import br.com.tecsiscom.omapp.exception.EstoqueVeiculoNaoUnitarioException;
 import br.com.tecsiscom.omapp.exception.NegocioException;
 import br.com.tecsiscom.omapp.exception.VendaNaoEncontradoException;
-import br.com.tecsiscom.omapp.model.entity.estoque.Estoque;
 import br.com.tecsiscom.omapp.model.entity.estoque.saida.ItemSaida;
 import br.com.tecsiscom.omapp.model.entity.estoque.saida.Saida;
 import br.com.tecsiscom.omapp.model.entity.financeiro.receber.ContaReceber;
@@ -40,6 +38,8 @@ import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.vendas.ItemVenda
 import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.vendas.Venda;
 import br.com.tecsiscom.omapp.model.entity.veiculos.Veiculo;
 import br.com.tecsiscom.omapp.model.repository.estoque.EstoqueRepository;
+import br.com.tecsiscom.omapp.model.repository.financeiro.receber.ContaReceberRepository;
+import br.com.tecsiscom.omapp.model.repository.financeiro.receber.ItemContaReceberRepository;
 import br.com.tecsiscom.omapp.model.repository.manutencoes.ManutencaoRepository;
 import br.com.tecsiscom.omapp.model.repository.pessoas.PessoaRepository;
 import br.com.tecsiscom.omapp.model.repository.produtos.ProdutoRepository;
@@ -63,56 +63,60 @@ import br.com.tecsiscom.omapp.rest.model.output.OutputDespachamentoVendaVeiculo;
 @RequestMapping(path = "/vendas/veiculo")
 public class VeiculoVendaController {
 
-	
 	@Autowired
 	VendasService service;
-	
+
 	@Autowired
 	VendaRepository repository;
 
 	@Autowired
 	ItemVendaService itemVendaService;
-	
 
 	@Autowired
 	VeiculoService veiculoService;
 
 	@Autowired
 	VeiculoRepository veiculoRepository;
-	
+
 	@Autowired
 	ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	ItemVendaRepository itemVendaRepository;
-	
+
 	@Autowired
 	SaidaService saidaService;
-	
+
 	@Autowired
 	ItemSaidaService itemSaidaService;
-	
+
 	@Autowired
 	ManutencaoService manutencaoService;
 
 	@Autowired
 	EstoqueRepository estoqueRepository;
-	
+
 	@Autowired
 	ContasReceberService contaReceberService;
-	
+
 	@Autowired
 	ItemContaReceberService itemContaReceberService;
-	
+
+	@Autowired
+	ItemContaReceberRepository itemContaReceberRepository;
+
 	@Autowired
 	PessoaRepository pessoaRepository;
-	
+
 	@Autowired
 	ManutencaoRepository manutencaoRepository;
-	
+
 	@Autowired
-	EstoqueService estoqueService;	
-	
+	EstoqueService estoqueService;
+
+	@Autowired
+	ContaReceberRepository contaReceberRepository;
+
 	@Transactional
 	@CheckSecurity.Vendas.PodeEditar
 	@PostMapping
@@ -127,20 +131,20 @@ public class VeiculoVendaController {
 		itemVenda.setQuantidade(new BigDecimal(1));
 		itemVenda.setValorUnitario(item.getValorUnitario());
 		itemVenda.setId(item.getId());
+		venda.setTotal(item.getValorUnitario());
 
 		try {
-			venda = service.salvar(item.getVenda());
+			venda = service.salvar(venda);
 			itemVenda.setVenda(venda);
 			itemVenda = itemVendaService.salvar(itemVenda);
 			item.setVenda(venda);
 
 			return item;
-		} catch(VendaNaoEncontradoException e) {
+		} catch (VendaNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
-	
-	
+
 	@CheckSecurity.Vendas.PodeConsultar
 	@GetMapping()
 	public List<Venda> listar() {
@@ -163,7 +167,29 @@ public class VeiculoVendaController {
 		item.setVeiculo(veiculo.get());
 		return item;
 	}
-	
+
+	@CheckSecurity.Vendas.PodeConsultar
+	@GetMapping("/completa/{vendaId}")
+	public OutputDespachamentoVendaVeiculo buscarTudo(@PathVariable Long vendaId) {
+		Optional<Venda> venda = repository.findById(vendaId);
+		Optional<ItemVenda> itemVenda = Optional.ofNullable(this.itemVendaRepository.findTop1ByVendaId(vendaId));
+		Optional<Veiculo> veiculo = this.veiculoRepository.findById(itemVenda.get().getProduto().getId());
+
+		/* Empcotar o retorno */
+		OutputDespachamentoVendaVeiculo out = new OutputDespachamentoVendaVeiculo();
+		out.setVenda(venda.get());
+		out.setVeiculo(veiculo.get());
+		if (venda.get().getProcessada()) {
+			ContaReceber cr = this.contaReceberRepository.findByVendaId(vendaId);
+			out.setContaReceber(cr);
+			out.setItensContaReceber(this.itemContaReceberRepository.findByContaReceberId(cr.getId()));
+			out.setEstoque(this.estoqueRepository.findByProdutoId(veiculo.get().getId()));
+			// out.setIdManutencao(this.manutencaoRepository.findByVendaId(vendaId).getId());
+			/* Empcotar o retorno */
+		}
+		return out;
+	}
+
 	@Transactional
 	@CheckSecurity.Vendas.PodeEditar
 	@DeleteMapping("/{vendaId}")
@@ -181,7 +207,7 @@ public class VeiculoVendaController {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 	}
-	
+
 	@Transactional
 	@CheckSecurity.Vendas.PodeEditar
 	@PostMapping(path = "/despachar")
@@ -196,8 +222,8 @@ public class VeiculoVendaController {
 			saida.setTransacaoComercialSaida(t);
 			saida = saidaService.salvar(saida);
 
-			ItemVenda icp = this.itemVendaRepository.findTop1ByVendaId(item.getIdVenda());
-			Produto p = icp.getProduto();
+			ItemVenda icr = this.itemVendaRepository.findTop1ByVendaId(item.getIdVenda());
+			Produto p = icr.getProduto();
 //			Optional<Estoque> estoque = Optional.ofNullable(this.estoqueRepository.findByProdutoId(p.getId()));
 //
 //			/* RN:56 */
@@ -214,29 +240,28 @@ public class VeiculoVendaController {
 			i.setSaida(saida);
 			i.setQuantidade(1L);
 			i.setProduto(p);
-			/* Atualiza o estoque*/
+			/* Atualiza o estoque */
 			this.estoqueService.subtrairItem(p, 1L);
 			/* Salva o item */
 			i = this.itemSaidaService.salvar(i);
 			/* Saida */
 
 			/* Contas Receber */
-			ContaReceber cp = new ContaReceber();
+			ContaReceber cr = new ContaReceber();
 			Optional<Venda> c;
 			c = this.repository.findById(item.getIdVenda());
-			cp.setVenda(c.get());
-			cp.setDevedor(c.get().getCliente());
-			cp = this.contaReceberService.salvar(cp);
+			cr.setVenda(c.get());
+			cr.setDevedor(c.get().getCliente());
+			cr = this.contaReceberService.salvar(cr);
 
 			ItemContaReceber ict = new ItemContaReceber();
-			ict.setContaReceber(cp);
-			BigDecimal totalVenda = icp.getValorUnitario();
+			ict.setContaReceber(cr);
+			BigDecimal totalVenda = icr.getValorUnitario();
 			ict.setValorDocumento(totalVenda);
 			ict.setDataVencimento(item.getDataPrimeiraParcela());
 			ict = this.itemContaReceberService.salvar(ict);
 			/* Contas Receber */
 
-	
 			/* Atualizar Status Venda */
 			Optional<Venda> venda = this.repository.findById(item.getIdVenda());
 			venda.get().setProcessada(true);
@@ -244,8 +269,10 @@ public class VeiculoVendaController {
 			/* Atualizar Status Venda */
 
 			/* Fechar Manutenção */
-			Optional<Veiculo> v = this.veiculoRepository.findById(icp.getProduto().getId());
+			Optional<Veiculo> v = this.veiculoRepository.findById(icr.getProduto().getId());
 			Manutencao m = this.manutencaoRepository.findByVeiculoIdAndAtiva(v.get().getId(), true);
+			m.setVenda(venda.get());
+			m = manutencaoService.salvar(m);
 			m = this.manutencaoService.alterarStatusManutencao(m.getId(), false);
 			/* Abrir Manutenção */
 
@@ -253,7 +280,7 @@ public class VeiculoVendaController {
 			OutputDespachamentoVendaVeiculo out = new OutputDespachamentoVendaVeiculo();
 			out.setVenda(venda.get());
 			out.setVeiculo(v.get());
-			out.setContaReceber(cp);
+			out.setContaReceber(cr);
 			Set<ItemContaReceber> itensReceber = new HashSet<ItemContaReceber>();
 			itensReceber.add(ict);
 			out.setItensContaReceber(itensReceber);
@@ -271,6 +298,4 @@ public class VeiculoVendaController {
 		}
 	}
 
-
-	
 }
