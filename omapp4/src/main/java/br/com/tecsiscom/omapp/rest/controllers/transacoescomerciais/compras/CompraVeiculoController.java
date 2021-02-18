@@ -46,6 +46,7 @@ import br.com.tecsiscom.omapp.model.repository.produtos.ProdutoRepository;
 import br.com.tecsiscom.omapp.model.repository.transacoescomerciais.compras.CompraRepository;
 import br.com.tecsiscom.omapp.model.repository.transacoescomerciais.compras.ItemCompraRepository;
 import br.com.tecsiscom.omapp.model.repository.veiculos.VeiculoRepository;
+import br.com.tecsiscom.omapp.model.service.estoque.EstoqueService;
 import br.com.tecsiscom.omapp.model.service.estoque.entrada.EntradaService;
 import br.com.tecsiscom.omapp.model.service.estoque.entrada.ItemEntradaService;
 import br.com.tecsiscom.omapp.model.service.financeiro.pagar.ContasPagarService;
@@ -107,6 +108,9 @@ public class CompraVeiculoController {
 
 	@Autowired
 	EstoqueRepository estoqueRepository;
+	
+	@Autowired
+	EstoqueService estoqueService;
 
 	@Transactional
 	@CheckSecurity.Compras.PodeEditar
@@ -128,8 +132,6 @@ public class CompraVeiculoController {
 			itemCompra.setCompra(compra);
 			itemCompra = itemCompraService.salvar(itemCompra);
 
-			// Optional<Veiculo> veiculo =
-			// this.veiculoRepository.findById(item.getVeiculo().getId());
 			Veiculo veiculo = item.getVeiculo();
 			veiculo.setProprietarios(item.getVeiculo().getProprietarios());
 			veiculo.setPlaca(item.getVeiculo().getPlaca());
@@ -214,9 +216,10 @@ public class CompraVeiculoController {
 			i.setEntrada(entrada);
 			i.setQuantidade(1L);
 			i.setProduto(p);
-			/* Salva o item e atualiza o estoque */
+			/* Atualiza o estoque*/
+			this.estoqueService.somarItem(p, 1L);
+			/*Salva o item*/
 			i = this.itemEntradaService.salvar(i);
-			System.out.println(i.getProduto().getNome());
 			/* Entrada */
 
 			/* Contas Pagar */
@@ -256,21 +259,16 @@ public class CompraVeiculoController {
 			m = this.manutencaoService.salvar(m);
 			/* Abrir Manutenção */
 
-			/* Empcotar o retorno */
+			/* Empacotar o retorno */
 			OutputRecebimentoCompraVeiculo out = new OutputRecebimentoCompraVeiculo();
 			out.setCompra(compra.get());
-			//out.setEntrada(entrada);
-			//Set<ItemEntrada> itens = new HashSet<ItemEntrada>();
-			//itens.add(i);
-			//out.setItensEntrada(itens);
 			out.setVeiculo(v.get());
 			out.setContaPagar(cp);
 			Set<ItemContaPagar> itensPagar = new HashSet<ItemContaPagar>();
 			itensPagar.add(ict);
 			out.setItensContaPgar(itensPagar);
 			out.setIdManutencao(m.getId());
-			//out.setEstoque(estoque.get());
-			/* Empcotar o retorno */
+			/* Empacotar o retorno */
 
 			return out;
 

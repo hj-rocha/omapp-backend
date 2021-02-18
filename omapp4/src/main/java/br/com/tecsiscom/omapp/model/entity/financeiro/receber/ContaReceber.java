@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import br.com.tecsiscom.omapp.model.entity.financeiro.Conta;
+import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.transacoescomerciais.vendas.Venda;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,5 +22,10 @@ public class ContaReceber extends Conta{
 	@OneToOne
 	@JoinColumn(name="venda_id",referencedColumnName = "id", unique = true, nullable = false)
     private Venda venda ;
+	
+	@OneToOne
+	@JoinColumn(name="devedor_id", referencedColumnName = "id", nullable = false)
+	private Pessoa devedor;
+
 
 }
