@@ -1,7 +1,11 @@
 package br.com.tecsiscom.omapp.model.entity.financeiro.pagar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import br.com.tecsiscom.omapp.model.entity.financeiro.Conta;
@@ -27,5 +31,8 @@ public class ContaPagar extends Conta{
 	@OneToOne
 	@JoinColumn(name="credor_id", referencedColumnName = "id", nullable = false)
 	private Pessoa credor;
+	
+	@OneToMany(mappedBy = "contaPagar")
+	List<ItemContaPagar> itensContaPagar = new ArrayList<>();
 
 }

@@ -10,7 +10,7 @@ public class InputRecebimentoCompraVeiculo {
 	
 	@JsonFormat(pattern = "d/M/yyyy")
 	//@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private LocalDate dataPrimeiraParcela;
+	private LocalDate dataPrimeiraParcela = LocalDate.now();
 	
 	private int numeroParcelas;
 	

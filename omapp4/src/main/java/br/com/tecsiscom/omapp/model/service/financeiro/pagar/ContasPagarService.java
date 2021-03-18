@@ -19,4 +19,5 @@ public class ContasPagarService {
 	public void remover(Long id) {
 		repository.deleteById(id);
 	}
+	 
 }

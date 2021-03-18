@@ -10,14 +10,13 @@ public class InputDespachamentoVendaVeiculo {
 	
 	@JsonFormat(pattern = "d/M/yyyy")
 	//@DateTimeFormat(iso = ISO.DATE, pattern = "dd/MM/yyyy")
-	private LocalDate dataPrimeiraParcela;
+	private LocalDate dataPrimeiraParcela  = LocalDate.now();
 	
 	private int numeroParcelas;
 	
 	private int intervaloEntrePagamentos = 30;	
 	
 	private Long idConferenteLogado;
-
 
 	public Long getIdVenda() {
 		return idVenda;

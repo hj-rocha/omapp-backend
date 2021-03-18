@@ -3,6 +3,7 @@ package br.com.tecsiscom.omapp.model.entity.transacoescomerciais;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +14,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import lombok.Data;
@@ -39,6 +46,9 @@ public class TransacaoComercial implements Serializable {
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataCadastro;
+	
+	@Column(columnDefinition = "datetime")
+	private LocalDateTime dataRecebimento;
 	
 	private BigDecimal total;
 	

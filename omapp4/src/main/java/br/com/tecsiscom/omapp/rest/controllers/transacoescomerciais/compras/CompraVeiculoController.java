@@ -1,6 +1,8 @@
 package br.com.tecsiscom.omapp.rest.controllers.transacoescomerciais.compras;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +35,6 @@ import br.com.tecsiscom.omapp.model.entity.estoque.entrada.Entrada;
 import br.com.tecsiscom.omapp.model.entity.estoque.entrada.ItemEntrada;
 import br.com.tecsiscom.omapp.model.entity.financeiro.pagar.ContaPagar;
 import br.com.tecsiscom.omapp.model.entity.financeiro.pagar.ItemContaPagar;
-import br.com.tecsiscom.omapp.model.entity.financeiro.receber.ContaReceber;
 import br.com.tecsiscom.omapp.model.entity.manutencoes.Manutencao;
 import br.com.tecsiscom.omapp.model.entity.pessoas.Pessoa;
 import br.com.tecsiscom.omapp.model.entity.produtos.Produto;
@@ -61,7 +62,6 @@ import br.com.tecsiscom.omapp.model.service.transacoescomerciais.compras.ItemCom
 import br.com.tecsiscom.omapp.model.service.veiculos.VeiculoService;
 import br.com.tecsiscom.omapp.rest.model.input.InputItemCompraVeiculo;
 import br.com.tecsiscom.omapp.rest.model.input.InputRecebimentoCompraVeiculo;
-import br.com.tecsiscom.omapp.rest.model.output.OutputDespachamentoVendaVeiculo;
 import br.com.tecsiscom.omapp.rest.model.output.OutputRecebimentoCompraVeiculo;
 
 @RestController
@@ -221,7 +221,7 @@ public class CompraVeiculoController {
 	@Transactional
 	@CheckSecurity.Compras.PodeEditar
 	@PostMapping(path = "/receber")
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.ACCEPTED)
 	public OutputRecebimentoCompraVeiculo receberCompraVeiculo(@RequestBody InputRecebimentoCompraVeiculo item) {
 
 		try {
@@ -239,7 +239,7 @@ public class CompraVeiculoController {
 			/* RN:56 */
 			if (estoque.isPresent()) {
 				if (estoque.get().getQuantidade() > 0) {
-					throw new EstoqueVeiculoNaoUnitarioException("O estoque de um veículo "
+					throw new EstoqueVeiculoNaoUnitarioException("O estoque do veículo "
 							+ estoque.get().getProduto().getNome() + " não pode ser maior que um.");
 				}
 			}
@@ -262,12 +262,12 @@ public class CompraVeiculoController {
 			cp.setCredor(c.get().getFornecedor());
 			cp = this.contaPagarSevice.salvar(cp);
 
-			ItemContaPagar ict = new ItemContaPagar();
-			ict.setContaPagar(cp);
-			BigDecimal totalCompra = icp.getValorUnitario();
-			ict.setValorDocumento(totalCompra);
-			ict.setDataVencimento(item.getDataPrimeiraParcela());
-			ict = this.itemContaPagarService.salvar(ict);
+//  		ItemContaPagar ict = new ItemContaPagar();
+//			ict.setContaPagar(cp);
+//			BigDecimal totalCompra = icp.getValorUnitario();
+//			ict.setValorDocumento(totalCompra);
+//			ict.setDataVencimento(item.getDataPrimeiraParcela());
+//			ict = this.itemContaPagarService.salvar(ict);
 			/* Contas Pagar */
 
 			/* Atualizar Produto */
@@ -279,6 +279,7 @@ public class CompraVeiculoController {
 			/* Atualizar Status Compra */
 			Optional<Compra> compra = this.compraRepository.findById(item.getIdCompra());
 			compra.get().setProcessada(true);
+			compra.get().setDataRecebimento(LocalDateTime.now());
 			this.compraService.salvar(compra.get());
 			/* Atualizar Status Compra */
 
@@ -298,7 +299,7 @@ public class CompraVeiculoController {
 			out.setVeiculo(v.get());
 			out.setContaPagar(cp);
 			Set<ItemContaPagar> itensPagar = new HashSet<ItemContaPagar>();
-			itensPagar.add(ict);
+			///////itensPagar.add(ict);
 			out.setItensContaPgar(itensPagar);
 			out.setIdManutencao(m.getId());
 			/* Empacotar o retorno */
