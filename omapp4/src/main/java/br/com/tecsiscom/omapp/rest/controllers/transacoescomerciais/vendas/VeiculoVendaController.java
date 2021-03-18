@@ -1,6 +1,7 @@
 package br.com.tecsiscom.omapp.rest.controllers.transacoescomerciais.vendas;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -265,6 +266,7 @@ public class VeiculoVendaController {
 			/* Atualizar Status Venda */
 			Optional<Venda> venda = this.repository.findById(item.getIdVenda());
 			venda.get().setProcessada(true);
+			venda.get().setDataDespacho(LocalDateTime.now());
 			this.service.salvar(venda.get());
 			/* Atualizar Status Venda */
 

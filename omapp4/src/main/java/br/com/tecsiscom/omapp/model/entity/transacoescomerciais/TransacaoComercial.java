@@ -47,9 +47,6 @@ public class TransacaoComercial implements Serializable {
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime dataCadastro;
 	
-	@Column(columnDefinition = "datetime")
-	private LocalDateTime dataRecebimento;
-	
 	private BigDecimal total;
 	
     @Column(columnDefinition = "boolean default false")

@@ -1,5 +1,8 @@
 package br.com.tecsiscom.omapp.model.entity.transacoescomerciais.compras;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -22,6 +25,9 @@ public class Compra extends TransacaoComercialEntrada {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(columnDefinition = "datetime")
+	private LocalDateTime dataRecebimento;
+	
 	@ManyToOne
 	@JoinColumn(nullable = false)
     private Pessoa fornecedor;

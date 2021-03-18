@@ -1,5 +1,8 @@
 package br.com.tecsiscom.omapp.model.entity.transacoescomerciais.vendas;
 
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +22,9 @@ public class Venda extends TransacaoComercialSaida {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Column(columnDefinition = "datetime")
+	private LocalDateTime dataDespacho;
+	
 	@ManyToOne
 	@JoinColumn(nullable = false)
     private Pessoa cliente;
