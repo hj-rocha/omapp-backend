@@ -7,6 +7,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,16 +51,22 @@ public class PessoaFisicaController {
 	@Autowired
 	UsuarioRepository usuarioRepository;
 
+//	@CheckSecurity.Pessoas.PodeConsultar
+//	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
+//	@GetMapping
+//	public List<PessoaFisica> listar() {
+//		List<PessoaFisica> pessoas = pessoaRepository.findAll();
+////		for (Pessoa pessoa : pessoas) {
+////			System.out.println(pessoa.getNome());
+////		}
+//		return pessoas;
+//	}
+//	
 	@CheckSecurity.Pessoas.PodeConsultar
-	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
 	@GetMapping
-	public List<PessoaFisica> listar() {
-		List<PessoaFisica> pessoas = pessoaRepository.findAll();
-//		for (Pessoa pessoa : pessoas) {
-//			System.out.println(pessoa.getNome());
-//		}
-		return pessoas;
-	}
+	public Page<PessoaFisica> listar(@PageableDefault(size = 10) Pageable pageable) {
+		return pessoaRepository.findAll(pageable);
+	}	
 
 	@CheckSecurity.Pessoas.PodeConsultar
 	//@PreAuthorize("hasAuthority('LISTAR_PESSOAS')")
